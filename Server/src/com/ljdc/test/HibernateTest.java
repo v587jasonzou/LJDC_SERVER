@@ -1,6 +1,6 @@
 package com.ljdc.test;
 
-import com.ljdc.pojo.User;
+import com.ljdc.pojo.UserServer;
 import org.hibernate.Query;
 import org.hibernate.Session;
 import org.hibernate.SessionFactory;
@@ -42,20 +42,15 @@ public class HibernateTest {
 
     @Test
     public void query() {
-        String hql = "from User";
+        String hql = "from UserServer ";
         Query query = session.createQuery(hql);
-        List<User> list = query.list();
-        for (User s : list
+        List<UserServer> list = query.list();
+        for (UserServer s : list
                 ) {
             System.out.println(s);
 
         }
     }
 
-    @Test
-    public void add() {
-        User user = new User("溪枫飘絮", "123");
-        session.save(user);
-    }
 
 }

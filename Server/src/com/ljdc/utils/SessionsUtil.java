@@ -1,12 +1,8 @@
 package com.ljdc.utils;
 
-import com.ljdc.pojo.User;
-import org.hibernate.Query;
 import org.hibernate.Session;
 import org.hibernate.SessionFactory;
 import org.hibernate.cfg.AnnotationConfiguration;
-
-import java.util.List;
 
 
 /**

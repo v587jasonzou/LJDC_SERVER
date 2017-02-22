@@ -1,4 +1,4 @@
-<dataSource name="server_ljdc">
+<dataSource name="hibernate.cfg.xml/Hibernate">
   <database-model serializer="dbm" rdbms="MYSQL" format-version="2.6">
     <schema id="1" name="server_ljdc">
       <visible>1</visible>
@@ -189,7 +189,7 @@
     <column id="58" parent="16" name="head_image_url">
       <data-type>varchar(20)|0</data-type>
     </column>
-    <column id="59" parent="16" name="nice_name">
+    <column id="59" parent="16" name="nickname">
       <data-type>varchar(20)|0</data-type>
     </column>
     <column id="60" parent="16" name="password">
@@ -197,7 +197,6 @@
       <data-type>varchar(20)|0</data-type>
     </column>
     <column id="61" parent="16" name="phone">
-      <mandatory>1</mandatory>
       <data-type>varchar(20)|0</data-type>
     </column>
     <key id="62" parent="16" name="PRIMARY">

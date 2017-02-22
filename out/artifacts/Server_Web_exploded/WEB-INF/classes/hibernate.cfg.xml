@@ -16,7 +16,6 @@
         <property name="show_sql">true</property>
         <property name="format_sql">true</property>
 
-        <mapping class="com.ljdc.pojo.User"/>
         <mapping class="com.ljdc.pojo.LearnLib1Server"/>
         <mapping class="com.ljdc.pojo.LearnLib2Server"/>
         <mapping class="com.ljdc.pojo.Lib1EnglishGrand4CoreServer"/>

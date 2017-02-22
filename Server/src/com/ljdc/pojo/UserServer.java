@@ -17,7 +17,7 @@ public class UserServer {
     private String phone;
     private String password;
     private String email;
-    private String niceName;
+    private String nickname;
     private String headImageUrl;
     private Collection<LearnLib1Server> learnLib1ServersByUserId;
     private Collection<LearnLib2Server> learnLib2ServersByUserId;
@@ -65,13 +65,13 @@ public class UserServer {
     }
 
     @Basic
-    @Column(name = "nice_name", nullable = true, length = 20)
-    public String getNiceName() {
-        return niceName;
+    @Column(name = "nickname", nullable = true, length = 20)
+    public String getNickname() {
+        return nickname;
     }
 
-    public void setNiceName(String niceName) {
-        this.niceName = niceName;
+    public void setNickname(String niceName) {
+        this.nickname = niceName;
     }
 
     @Basic
@@ -95,7 +95,7 @@ public class UserServer {
         if (phone != null ? !phone.equals(that.phone) : that.phone != null) return false;
         if (password != null ? !password.equals(that.password) : that.password != null) return false;
         if (email != null ? !email.equals(that.email) : that.email != null) return false;
-        if (niceName != null ? !niceName.equals(that.niceName) : that.niceName != null) return false;
+        if (nickname != null ? !nickname.equals(that.nickname) : that.nickname != null) return false;
         if (headImageUrl != null ? !headImageUrl.equals(that.headImageUrl) : that.headImageUrl != null) return false;
 
         return true;
@@ -107,7 +107,7 @@ public class UserServer {
         result = 31 * result + (phone != null ? phone.hashCode() : 0);
         result = 31 * result + (password != null ? password.hashCode() : 0);
         result = 31 * result + (email != null ? email.hashCode() : 0);
-        result = 31 * result + (niceName != null ? niceName.hashCode() : 0);
+        result = 31 * result + (nickname != null ? nickname.hashCode() : 0);
         result = 31 * result + (headImageUrl != null ? headImageUrl.hashCode() : 0);
         return result;
     }
@@ -137,5 +137,20 @@ public class UserServer {
 
     public void setWordDevelopmentServersByUserId(Collection<WordDevelopmentServer> wordDevelopmentServersByUserId) {
         this.wordDevelopmentServersByUserId = wordDevelopmentServersByUserId;
+    }
+
+    @Override
+    public String toString() {
+        return "UserServer{" +
+                "userId=" + userId +
+                ", phone='" + phone + '\'' +
+                ", password='" + password + '\'' +
+                ", email='" + email + '\'' +
+                ", nickname='" + nickname + '\'' +
+                ", headImageUrl='" + headImageUrl + '\'' +
+                ", learnLib1ServersByUserId=" + learnLib1ServersByUserId +
+                ", learnLib2ServersByUserId=" + learnLib2ServersByUserId +
+                ", wordDevelopmentServersByUserId=" + wordDevelopmentServersByUserId +
+                '}';
     }
 }
