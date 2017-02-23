@@ -1,29 +1,7 @@
 <?xml version="1.0" encoding="UTF-8"?>
 <project version="4">
   <component name="ChangeListManager">
-    <list default="true" id="8f4c4563-0b47-4cc6-9a24-43b014be540a" name="Default" comment="">
-      <change type="NEW" beforePath="" afterPath="$PROJECT_DIR$/Server/src/com/ljdc/bean/Message.java" />
-      <change type="NEW" beforePath="" afterPath="$PROJECT_DIR$/Server/src/com/ljdc/utils/Utils.java" />
-      <change type="DELETED" beforePath="$PROJECT_DIR$/Server/src/com/ljdc/action/RegisterAction.java" afterPath="" />
-      <change type="DELETED" beforePath="$PROJECT_DIR$/out/artifacts/Server_Web_exploded/WEB-INF/classes/com/ljdc/action/RegisterAction.class" afterPath="" />
-      <change type="DELETED" beforePath="$PROJECT_DIR$/out/production/Server/com/ljdc/action/RegisterAction.class" afterPath="" />
-      <change type="MODIFICATION" beforePath="$PROJECT_DIR$/out/artifacts/Server_Web_exploded/WEB-INF/classes/com/ljdc/action/LoginAction.class" afterPath="$PROJECT_DIR$/out/artifacts/Server_Web_exploded/WEB-INF/classes/com/ljdc/action/LoginAction.class" />
-      <change type="MODIFICATION" beforePath="$PROJECT_DIR$/out/artifacts/Server_Web_exploded/WEB-INF/classes/com/ljdc/pojo/UserServer.class" afterPath="$PROJECT_DIR$/out/artifacts/Server_Web_exploded/WEB-INF/classes/com/ljdc/pojo/UserServer.class" />
-      <change type="MODIFICATION" beforePath="$PROJECT_DIR$/out/production/Server/com/ljdc/action/LoginAction.class" afterPath="$PROJECT_DIR$/out/production/Server/com/ljdc/action/LoginAction.class" />
-      <change type="MODIFICATION" beforePath="$PROJECT_DIR$/out/production/Server/com/ljdc/pojo/UserServer.class" afterPath="$PROJECT_DIR$/out/production/Server/com/ljdc/pojo/UserServer.class" />
-      <change type="MODIFICATION" beforePath="$PROJECT_DIR$/.idea/artifacts/Server_Web_exploded.xml" afterPath="$PROJECT_DIR$/.idea/artifacts/Server_Web_exploded.xml" />
-      <change type="MODIFICATION" beforePath="$PROJECT_DIR$/.idea/dataSources.local.xml" afterPath="$PROJECT_DIR$/.idea/dataSources.local.xml" />
-      <change type="MODIFICATION" beforePath="$PROJECT_DIR$/.idea/dataSources.xml" afterPath="$PROJECT_DIR$/.idea/dataSources.xml" />
-      <change type="MODIFICATION" beforePath="$PROJECT_DIR$/.idea/dataSources/80e383dc-3d56-428e-bf79-e7b5e0c9037c.xml" afterPath="$PROJECT_DIR$/.idea/dataSources/80e383dc-3d56-428e-bf79-e7b5e0c9037c.xml" />
-      <change type="MODIFICATION" beforePath="$PROJECT_DIR$/.idea/workspace.xml" afterPath="$PROJECT_DIR$/.idea/workspace.xml" />
-      <change type="MODIFICATION" beforePath="$PROJECT_DIR$/Server/Server.iml" afterPath="$PROJECT_DIR$/Server/Server.iml" />
-      <change type="MODIFICATION" beforePath="$PROJECT_DIR$/Server/src/com/ljdc/action/LoginAction.java" afterPath="$PROJECT_DIR$/Server/src/com/ljdc/action/LoginAction.java" />
-      <change type="MODIFICATION" beforePath="$PROJECT_DIR$/Server/src/com/ljdc/pojo/UserServer.java" afterPath="$PROJECT_DIR$/Server/src/com/ljdc/pojo/UserServer.java" />
-      <change type="MODIFICATION" beforePath="$PROJECT_DIR$/Server/src/struts.xml" afterPath="$PROJECT_DIR$/Server/src/struts.xml" />
-      <change type="MODIFICATION" beforePath="$PROJECT_DIR$/Server/接口说明" afterPath="$PROJECT_DIR$/Server/接口说明" />
-      <change type="MODIFICATION" beforePath="$PROJECT_DIR$/out/artifacts/Server_Web_exploded/WEB-INF/classes/struts.xml" afterPath="$PROJECT_DIR$/out/artifacts/Server_Web_exploded/WEB-INF/classes/struts.xml" />
-      <change type="MODIFICATION" beforePath="$PROJECT_DIR$/out/production/Server/struts.xml" afterPath="$PROJECT_DIR$/out/production/Server/struts.xml" />
-    </list>
+    <list default="true" id="8f4c4563-0b47-4cc6-9a24-43b014be540a" name="Default" comment="" />
     <ignored path="ServerLJDC.iws" />
     <ignored path=".idea/workspace.xml" />
     <ignored path=".idea/dataSources.local.xml" />
@@ -44,16 +22,6 @@
     <option name="SHOW_TABLE_DETAILS" value="true" />
     <option name="SHOW_EMPTY_GROUPS" value="false" />
     <option name="AUTO_SCROLL_FROM_SOURCE" value="false" />
-    <PATH>
-      <PATH_ELEMENT>
-        <option name="myItemId" />
-        <option name="myItemType" value="com.intellij.database.view.DatabaseStructure$Root" />
-      </PATH_ELEMENT>
-      <PATH_ELEMENT>
-        <option name="myItemId" value="hibernate.cfg.xml" />
-        <option name="myItemType" value="com.intellij.database.view.DbNodeDescriptor" />
-      </PATH_ELEMENT>
-    </PATH>
   </component>
   <component name="ExecutionTargetManager" SELECTED_TARGET="default_target" />
   <component name="FavoritesManager">
@@ -877,12 +845,12 @@
       <workItem from="1487782214886" duration="5861000" />
       <workItem from="1487830806123" duration="8377000" />
       <workItem from="1487848355541" duration="3865000" />
-      <workItem from="1487854237191" duration="991000" />
+      <workItem from="1487854237191" duration="1070000" />
     </task>
     <servers />
   </component>
   <component name="TimeTrackingManager">
-    <option name="totallyTimeSpent" value="58839000" />
+    <option name="totallyTimeSpent" value="58918000" />
   </component>
   <component name="TodoView">
     <todo-panel id="selected-file">
