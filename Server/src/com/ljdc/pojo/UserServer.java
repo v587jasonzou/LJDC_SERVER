@@ -35,7 +35,7 @@ public class UserServer {
     }
 
     @Basic
-    @Column(name = "phone", nullable = true, length = 20)
+    @Column(name = "phone", nullable = true, length = 20  , unique = true)
     public String getPhone() {
         return phone;
     }
@@ -55,7 +55,7 @@ public class UserServer {
     }
 
     @Basic
-    @Column(name = "email", nullable = true, length = 20)
+    @Column(name = "email", nullable = true, length = 20 , unique = true)
     public String getEmail() {
         return email;
     }
