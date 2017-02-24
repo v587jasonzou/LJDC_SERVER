@@ -43,5 +43,6 @@
     <orderEntry type="library" name="Struts 2-2.3.20.1" level="application" />
     <orderEntry type="library" name="tomcat-api" level="application" />
     <orderEntry type="library" name="gson-2.6.2" level="application" />
+    <orderEntry type="library" name="gson-2.6.2" level="project" />
   </component>
 </module>
