@@ -65,7 +65,7 @@ public class UserServer {
     }
 
     @Basic
-    @Column(name = "nickname", nullable = true, length = 20 , unique = true)
+    @Column(name = "nickname", nullable = true, length = 20)
     public String getNickname() {
         return nickname;
     }
