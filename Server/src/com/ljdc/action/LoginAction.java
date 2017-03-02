@@ -1,5 +1,6 @@
 package com.ljdc.action;
 
+import com.google.gson.Gson;
 import com.ljdc.bean.Message;
 import com.ljdc.pojo.UserServer;
 import com.ljdc.utils.SessionsUtil;
@@ -38,6 +39,7 @@ public class LoginAction extends ActionSupport implements ModelDriven<UserServer
      */
     public String register() {
         System.out.println("REQUEST URI: "+request.getRequestURI());
+        System.out.println("User info: "+user.toString());
         Session session = SessionsUtil.getSession();
         Transaction ts = session.beginTransaction();
         int newId = (int) session.save(user);
@@ -66,8 +68,8 @@ public class LoginAction extends ActionSupport implements ModelDriven<UserServer
         Session session = SessionsUtil.getSession();
         Transaction ts = session.beginTransaction();
 
-        String hql = "from UserServer u where u.password = :parm1 and (u.phone = :parm2 or u.nickname = :parm3 or u.email = :parm4)";
-        Query query = session.createQuery(hql).setParameter("parm1", user.getPassword()).setParameter("parm2", user.getPhone()).setParameter("parm3", user.getNickname()).setParameter("parm4", user.getEmail());
+        String hql = "from UserServer u where u.password = :parm1 and (u.phone = :parm2 or u.email = :parm4)";
+        Query query = session.createQuery(hql).setParameter("parm1", user.getPassword()).setParameter("parm2", user.getPhone()).setParameter("parm4", user.getEmail());
         List<UserServer> list = query.list();
         if (list.size() == 0) {
             //TODO 登录失败
@@ -76,8 +78,10 @@ public class LoginAction extends ActionSupport implements ModelDriven<UserServer
             Utils.printToBrowser(response, message.toString());
         } else {
             //TODO 登录成功
+            UserServer user = list.get(0);
             message.setCode(200);
-            message.setMsg("登录成功");
+            message.setMsg(new Gson().toJson(user));
+            System.out.println("message user : "+message.getMsg());
             Utils.printToBrowser(response, message.toString());
         }
         ts.commit();

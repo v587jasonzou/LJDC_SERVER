@@ -1,8 +1,7 @@
 package com.ljdc.pojo;
 
 import javax.persistence.*;
-import java.sql.Date;
-import java.sql.Timestamp;
+import java.util.Date;
 
 /**
  * Created with IntelliJ IDEA
@@ -11,19 +10,20 @@ import java.sql.Timestamp;
  * Time:下午 7:57
  * Desc:略
  */
+@SuppressWarnings("ALL")
 @Entity
-@Table(name = "word_development_server", schema = "server_ljdc", catalog = "")
+@Table(name = "word_development", schema = "server_ljdc", catalog = "")
 public class WordDevelopmentServer {
     private int wordDevId;
     private Integer wordsIncreaseNum;
     private Date wordIncreaseDate;
     private Integer graspLevel;
-    private Timestamp modified;
-    private UserServer userServerByUserId;
+    private Date modified;
+    private UserServer user;
 
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
-    @Column(name = "word_dev_id", nullable = false)
+    @Column(name = "wordDevId", nullable = false)
     public int getWordDevId() {
         return wordDevId;
     }
@@ -33,7 +33,7 @@ public class WordDevelopmentServer {
     }
 
     @Basic
-    @Column(name = "words_increase_num", nullable = true)
+    @Column(name = "wordsIncreaseNum", nullable = true)
     public Integer getWordsIncreaseNum() {
         return wordsIncreaseNum;
     }
@@ -43,7 +43,7 @@ public class WordDevelopmentServer {
     }
 
     @Basic
-    @Column(name = "word_increase_date", nullable = true)
+    @Column(name = "wordIncreaseDate", nullable = true)
     public Date getWordIncreaseDate() {
         return wordIncreaseDate;
     }
@@ -53,7 +53,7 @@ public class WordDevelopmentServer {
     }
 
     @Basic
-    @Column(name = "grasp_level", nullable = true)
+    @Column(name = "graspLevel", nullable = true)
     public Integer getGraspLevel() {
         return graspLevel;
     }
@@ -64,11 +64,11 @@ public class WordDevelopmentServer {
 
     @Basic
     @Column(name = "modified", nullable = false)
-    public Timestamp getModified() {
+    public Date getModified() {
         return modified;
     }
 
-    public void setModified(Timestamp modified) {
+    public void setModified(Date modified) {
         this.modified = modified;
     }
 
@@ -101,12 +101,12 @@ public class WordDevelopmentServer {
     }
 
     @ManyToOne
-    @JoinColumn(name = "user_id", referencedColumnName = "user_id", nullable = false)
-    public UserServer getUserServerByUserId() {
-        return userServerByUserId;
+    @JoinColumn(name = "userId", referencedColumnName = "userId")
+    public UserServer getUser() {
+        return user;
     }
 
-    public void setUserServerByUserId(UserServer userServerByUserId) {
-        this.userServerByUserId = userServerByUserId;
+    public void setUser(UserServer userServerByUserId) {
+        this.user = userServerByUserId;
     }
 }

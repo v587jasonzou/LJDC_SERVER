@@ -11,18 +11,18 @@ import java.sql.Timestamp;
  * Desc:略
  */
 @Entity
-@Table(name = "learn_lib2_server", schema = "server_ljdc", catalog = "")
+@Table(name = "learn_lib2", schema = "server_ljdc", catalog = "")
 public class LearnLib2Server {
     private int learnLib2Id;
     private int graspLevel;
     private Timestamp updataTime;
     private Timestamp modified;
-    private Lib2MiddleSchoolServer lib2MiddleSchoolServerByLib2Id;
-    private UserServer userServerByUserId;
+    private Lib2MiddleSchoolServer lib2;
+    private UserServer user;
 
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
-    @Column(name = "learn_lib2_id", nullable = false)
+    @Column(name = "learnLib2Id", nullable = false)
     public int getLearnLib2Id() {
         return learnLib2Id;
     }
@@ -32,7 +32,7 @@ public class LearnLib2Server {
     }
 
     @Basic
-    @Column(name = "grasp_level", nullable = false)
+    @Column(name = "graspLevel", nullable = false)
     public int getGraspLevel() {
         return graspLevel;
     }
@@ -42,7 +42,7 @@ public class LearnLib2Server {
     }
 
     @Basic
-    @Column(name = "updata_time", nullable = false)
+    @Column(name = "updataTime", nullable = false)
     public Timestamp getUpdataTime() {
         return updataTime;
     }
@@ -86,22 +86,22 @@ public class LearnLib2Server {
     }
 
     @ManyToOne
-    @JoinColumn(name = "lib2_id", referencedColumnName = "lib2_id")
-    public Lib2MiddleSchoolServer getLib2MiddleSchoolServerByLib2Id() {
-        return lib2MiddleSchoolServerByLib2Id;
+    @JoinColumn(name = "lib2Id", referencedColumnName = "lib2Id")
+    public Lib2MiddleSchoolServer getLib2() {
+        return lib2;
     }
 
-    public void setLib2MiddleSchoolServerByLib2Id(Lib2MiddleSchoolServer lib2MiddleSchoolServerByLib2Id) {
-        this.lib2MiddleSchoolServerByLib2Id = lib2MiddleSchoolServerByLib2Id;
+    public void setLib2(Lib2MiddleSchoolServer lib2) {
+        this.lib2 = lib2;
     }
 
     @ManyToOne
-    @JoinColumn(name = "user_id", referencedColumnName = "user_id")
-    public UserServer getUserServerByUserId() {
-        return userServerByUserId;
+    @JoinColumn(name = "userId", referencedColumnName = "userId")
+    public UserServer getUser() {
+        return user;
     }
 
-    public void setUserServerByUserId(UserServer userServerByUserId) {
-        this.userServerByUserId = userServerByUserId;
+    public void setUser(UserServer user) {
+        this.user = user;
     }
 }

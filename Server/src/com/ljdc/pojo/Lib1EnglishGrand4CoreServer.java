@@ -11,15 +11,15 @@ import java.util.Collection;
  * Desc:略
  */
 @Entity
-@Table(name = "lib1_english_grand_4_core_server", schema = "server_ljdc", catalog = "")
+@Table(name = "lib1", schema = "server_ljdc", catalog = "")
 public class Lib1EnglishGrand4CoreServer {
     private int lib1Id;
-    private Collection<LearnLib1Server> learnLib1ServersByLib1Id;
-    private WordLibServer wordLibServerByWordId;
+    private Collection<LearnLib1Server> learnLib1;
+    private WordLibServer wordLib;
 
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
-    @Column(name = "lib1_id", nullable = false)
+    @Column(name = "lib1Id", nullable = false)
     public int getLib1Id() {
         return lib1Id;
     }
@@ -45,22 +45,22 @@ public class Lib1EnglishGrand4CoreServer {
         return lib1Id;
     }
 
-    @OneToMany(mappedBy = "lib1EnglishGrand4CoreServerByLib1Id")
-    public Collection<LearnLib1Server> getLearnLib1ServersByLib1Id() {
-        return learnLib1ServersByLib1Id;
+    @OneToMany(mappedBy = "lib1")
+    public Collection<LearnLib1Server> getLearnLib1() {
+        return learnLib1;
     }
 
-    public void setLearnLib1ServersByLib1Id(Collection<LearnLib1Server> learnLib1ServersByLib1Id) {
-        this.learnLib1ServersByLib1Id = learnLib1ServersByLib1Id;
+    public void setLearnLib1(Collection<LearnLib1Server> learnLib1) {
+        this.learnLib1 = learnLib1;
     }
 
     @ManyToOne
-    @JoinColumn(name = "word_id", referencedColumnName = "word_id", nullable = false)
-    public WordLibServer getWordLibServerByWordId() {
-        return wordLibServerByWordId;
+    @JoinColumn(name = "wordId", referencedColumnName = "wordId", nullable = false)
+    public WordLibServer getWordLib() {
+        return wordLib;
     }
 
-    public void setWordLibServerByWordId(WordLibServer wordLibServerByWordId) {
-        this.wordLibServerByWordId = wordLibServerByWordId;
+    public void setWordLib(WordLibServer wordLib) {
+        this.wordLib = wordLib;
     }
 }

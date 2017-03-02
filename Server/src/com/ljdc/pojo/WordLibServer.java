@@ -11,7 +11,7 @@ import java.util.Collection;
  * Desc:略
  */
 @Entity
-@Table(name = "word_lib_server", schema = "server_ljdc", catalog = "")
+@Table(name = "word_lib", schema = "server_ljdc", catalog = "")
 public class WordLibServer {
     private int wordId;
     private String word;
@@ -35,12 +35,12 @@ public class WordLibServer {
     private String sentTrans3;
     private String sentEn4;
     private String sentTrans4;
-    private Collection<Lib1EnglishGrand4CoreServer> lib1EnglishGrand4CoreServersByWordId;
-    private Collection<Lib2MiddleSchoolServer> lib2MiddleSchoolServersByWordId;
+    private Collection<Lib1EnglishGrand4CoreServer> lib1;
+    private Collection<Lib2MiddleSchoolServer> lib2;
 
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
-    @Column(name = "word_id", nullable = false)
+    @Column(name = "wordId", nullable = false)
     public int getWordId() {
         return wordId;
     }
@@ -60,7 +60,7 @@ public class WordLibServer {
     }
 
     @Basic
-    @Column(name = "pron_str_en", nullable = false, length = 20)
+    @Column(name = "pronStrEn", nullable = false, length = 20)
     public String getPronStrEn() {
         return pronStrEn;
     }
@@ -70,7 +70,7 @@ public class WordLibServer {
     }
 
     @Basic
-    @Column(name = "pron_url_en", nullable = true, length = 255)
+    @Column(name = "pronUrlEn", nullable = true, length = 255)
     public String getPronUrlEn() {
         return pronUrlEn;
     }
@@ -80,7 +80,7 @@ public class WordLibServer {
     }
 
     @Basic
-    @Column(name = "pron_str_us", nullable = false, length = 20)
+    @Column(name = "pronStrUs", nullable = false, length = 20)
     public String getPronStrUs() {
         return pronStrUs;
     }
@@ -90,7 +90,7 @@ public class WordLibServer {
     }
 
     @Basic
-    @Column(name = "pron_url_us", nullable = true, length = 255)
+    @Column(name = "pronUrlUs", nullable = true, length = 255)
     public String getPronUrlUs() {
         return pronUrlUs;
     }
@@ -180,7 +180,7 @@ public class WordLibServer {
     }
 
     @Basic
-    @Column(name = "sent_en1", nullable = true, length = 255)
+    @Column(name = "sentEn1", nullable = true, length = 255)
     public String getSentEn1() {
         return sentEn1;
     }
@@ -190,7 +190,7 @@ public class WordLibServer {
     }
 
     @Basic
-    @Column(name = "sent_trans1", nullable = true, length = 255)
+    @Column(name = "sentTrans1", nullable = true, length = 255)
     public String getSentTrans1() {
         return sentTrans1;
     }
@@ -200,7 +200,7 @@ public class WordLibServer {
     }
 
     @Basic
-    @Column(name = "sent_en2", nullable = true, length = 255)
+    @Column(name = "sentEn2", nullable = true, length = 255)
     public String getSentEn2() {
         return sentEn2;
     }
@@ -210,7 +210,7 @@ public class WordLibServer {
     }
 
     @Basic
-    @Column(name = "sent_trans2", nullable = true, length = 255)
+    @Column(name = "sentTrans2", nullable = true, length = 255)
     public String getSentTrans2() {
         return sentTrans2;
     }
@@ -220,7 +220,7 @@ public class WordLibServer {
     }
 
     @Basic
-    @Column(name = "sent_en3", nullable = true, length = 255)
+    @Column(name = "sentEn3", nullable = true, length = 255)
     public String getSentEn3() {
         return sentEn3;
     }
@@ -230,7 +230,7 @@ public class WordLibServer {
     }
 
     @Basic
-    @Column(name = "sent_trans3", nullable = true, length = 255)
+    @Column(name = "sentTrans3", nullable = true, length = 255)
     public String getSentTrans3() {
         return sentTrans3;
     }
@@ -240,7 +240,7 @@ public class WordLibServer {
     }
 
     @Basic
-    @Column(name = "sent_en4", nullable = true, length = 255)
+    @Column(name = "sentEn4", nullable = true, length = 255)
     public String getSentEn4() {
         return sentEn4;
     }
@@ -250,7 +250,7 @@ public class WordLibServer {
     }
 
     @Basic
-    @Column(name = "sent_trans4", nullable = true, length = 255)
+    @Column(name = "sentTrans4", nullable = true, length = 255)
     public String getSentTrans4() {
         return sentTrans4;
     }
@@ -319,21 +319,21 @@ public class WordLibServer {
         return result;
     }
 
-    @OneToMany(mappedBy = "wordLibServerByWordId")
-    public Collection<Lib1EnglishGrand4CoreServer> getLib1EnglishGrand4CoreServersByWordId() {
-        return lib1EnglishGrand4CoreServersByWordId;
+    @OneToMany(mappedBy = "wordLib")
+    public Collection<Lib1EnglishGrand4CoreServer> getLib1() {
+        return lib1;
     }
 
-    public void setLib1EnglishGrand4CoreServersByWordId(Collection<Lib1EnglishGrand4CoreServer> lib1EnglishGrand4CoreServersByWordId) {
-        this.lib1EnglishGrand4CoreServersByWordId = lib1EnglishGrand4CoreServersByWordId;
+    public void setLib1(Collection<Lib1EnglishGrand4CoreServer> lib1) {
+        this.lib1 = lib1;
     }
 
-    @OneToMany(mappedBy = "wordLibServerByWordId")
-    public Collection<Lib2MiddleSchoolServer> getLib2MiddleSchoolServersByWordId() {
-        return lib2MiddleSchoolServersByWordId;
+    @OneToMany(mappedBy = "wordLib")
+    public Collection<Lib2MiddleSchoolServer> getLib2() {
+        return lib2;
     }
 
-    public void setLib2MiddleSchoolServersByWordId(Collection<Lib2MiddleSchoolServer> lib2MiddleSchoolServersByWordId) {
-        this.lib2MiddleSchoolServersByWordId = lib2MiddleSchoolServersByWordId;
+    public void setLib2(Collection<Lib2MiddleSchoolServer> lib2) {
+        this.lib2 = lib2;
     }
 }

@@ -1,6 +1,7 @@
 package com.ljdc.test;
 
 import com.ljdc.pojo.UserServer;
+import com.ljdc.pojo.WordDevelopmentServer;
 import org.hibernate.Query;
 import org.hibernate.Session;
 import org.hibernate.SessionFactory;
@@ -10,6 +11,7 @@ import org.junit.After;
 import org.junit.Before;
 import org.junit.Test;
 
+import java.util.Date;
 import java.util.List;
 
 
@@ -50,6 +52,19 @@ public class HibernateTest {
             System.out.println(s);
 
         }
+    }
+
+    @Test
+    public void insert() {
+        UserServer userServer = new UserServer();
+        userServer.setUserId(1);
+        userServer.setPassword("23");
+        WordDevelopmentServer wordDevelopmentServer = new WordDevelopmentServer();
+        wordDevelopmentServer.setModified(new Date());
+        wordDevelopmentServer.setWordIncreaseDate(new Date());
+        wordDevelopmentServer.setUser(userServer);
+        session.save(userServer);
+        session.save(wordDevelopmentServer);
     }
 
 

@@ -11,7 +11,7 @@ import java.util.Collection;
  * Desc:略
  */
 @Entity
-@Table(name = "user_server", schema = "server_ljdc", catalog = "")
+@Table(name = "user", schema = "server_ljdc", catalog = "")
 public class UserServer {
     private int userId;
     private String phone;
@@ -19,13 +19,13 @@ public class UserServer {
     private String email;
     private String nickname;
     private String headImageUrl;
-    private Collection<LearnLib1Server> learnLib1ServersByUserId;
-    private Collection<LearnLib2Server> learnLib2ServersByUserId;
-    private Collection<WordDevelopmentServer> wordDevelopmentServersByUserId;
+    private Collection<LearnLib1Server> learnLib1;
+    private Collection<LearnLib2Server> learnLib2;
+    private Collection<WordDevelopmentServer> wordDevelopment;
 
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
-    @Column(name = "user_id", nullable = false)
+    @Column(name = "userId", nullable = false)
     public int getUserId() {
         return userId;
     }
@@ -65,17 +65,17 @@ public class UserServer {
     }
 
     @Basic
-    @Column(name = "nickname", nullable = true, length = 20)
+    @Column(name = "nickname", nullable = true, length = 20 , unique = true)
     public String getNickname() {
         return nickname;
     }
 
-    public void setNickname(String niceName) {
-        this.nickname = niceName;
+    public void setNickname(String nickname) {
+        this.nickname = nickname;
     }
 
     @Basic
-    @Column(name = "head_image_url", nullable = true, length = 20)
+    @Column(name = "headImageUrl", nullable = true, length = 20)
     public String getHeadImageUrl() {
         return headImageUrl;
     }
@@ -112,31 +112,31 @@ public class UserServer {
         return result;
     }
 
-    @OneToMany(mappedBy = "userServerByUserId")
-    public Collection<LearnLib1Server> getLearnLib1ServersByUserId() {
-        return learnLib1ServersByUserId;
+    @OneToMany(mappedBy = "user")
+    public Collection<LearnLib1Server> getLearnLib1() {
+        return learnLib1;
     }
 
-    public void setLearnLib1ServersByUserId(Collection<LearnLib1Server> learnLib1ServersByUserId) {
-        this.learnLib1ServersByUserId = learnLib1ServersByUserId;
+    public void setLearnLib1(Collection<LearnLib1Server> learnLib1) {
+        this.learnLib1 = learnLib1;
     }
 
-    @OneToMany(mappedBy = "userServerByUserId")
-    public Collection<LearnLib2Server> getLearnLib2ServersByUserId() {
-        return learnLib2ServersByUserId;
+    @OneToMany(mappedBy = "user")
+    public Collection<LearnLib2Server> getLearnLib2() {
+        return learnLib2;
     }
 
-    public void setLearnLib2ServersByUserId(Collection<LearnLib2Server> learnLib2ServersByUserId) {
-        this.learnLib2ServersByUserId = learnLib2ServersByUserId;
+    public void setLearnLib2(Collection<LearnLib2Server> learnLib2) {
+        this.learnLib2 = learnLib2;
     }
 
-    @OneToMany(mappedBy = "userServerByUserId")
-    public Collection<WordDevelopmentServer> getWordDevelopmentServersByUserId() {
-        return wordDevelopmentServersByUserId;
+    @OneToMany(mappedBy = "user")
+    public Collection<WordDevelopmentServer> getWordDevelopment() {
+        return wordDevelopment;
     }
 
-    public void setWordDevelopmentServersByUserId(Collection<WordDevelopmentServer> wordDevelopmentServersByUserId) {
-        this.wordDevelopmentServersByUserId = wordDevelopmentServersByUserId;
+    public void setWordDevelopment(Collection<WordDevelopmentServer> wordDevelopment) {
+        this.wordDevelopment = wordDevelopment;
     }
 
     @Override
@@ -148,9 +148,9 @@ public class UserServer {
                 ", email='" + email + '\'' +
                 ", nickname='" + nickname + '\'' +
                 ", headImageUrl='" + headImageUrl + '\'' +
-                ", learnLib1ServersByUserId=" + learnLib1ServersByUserId +
-                ", learnLib2ServersByUserId=" + learnLib2ServersByUserId +
-                ", wordDevelopmentServersByUserId=" + wordDevelopmentServersByUserId +
+                ", learnLib1ServersByUserId=" + learnLib1 +
+                ", learnLib2ServersByUserId=" + learnLib2 +
+                ", wordDevelopmentServersByUserId=" + wordDevelopment +
                 '}';
     }
 }
