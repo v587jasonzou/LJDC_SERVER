@@ -1,5 +1,7 @@
 package com.ljdc.pojo;
 
+import org.hibernate.annotations.GenericGenerator;
+
 import javax.persistence.*;
 import java.util.Collection;
 
@@ -39,7 +41,8 @@ public class WordLibServer {
     private Collection<Lib2MiddleSchoolServer> lib2;
 
     @Id
-    @GeneratedValue(strategy = GenerationType.IDENTITY)
+    @GeneratedValue(generator = "ASSIGN")
+    @GenericGenerator(name = "ASSIGN", strategy = "assigned")
     @Column(name = "wordId", nullable = false)
     public int getWordId() {
         return wordId;
@@ -50,20 +53,20 @@ public class WordLibServer {
     }
 
     @Basic
-    @Column(name = "word", nullable = false, length = 20)
+    @Column(name = "word", nullable = false, length = 20,unique = true)
     public String getWord() {
         return word;
-    }
+    }//单词
 
     public void setWord(String word) {
         this.word = word;
     }
 
     @Basic
-    @Column(name = "pronStrEn", nullable = false, length = 20)
+    @Column(name = "pronStrEn", nullable = true, length = 20)
     public String getPronStrEn() {
         return pronStrEn;
-    }
+    }//单词英语发音
 
     public void setPronStrEn(String pronStrEn) {
         this.pronStrEn = pronStrEn;
@@ -73,17 +76,17 @@ public class WordLibServer {
     @Column(name = "pronUrlEn", nullable = true, length = 255)
     public String getPronUrlEn() {
         return pronUrlEn;
-    }
+    }//单词英语发音地址
 
     public void setPronUrlEn(String pronUrlEn) {
         this.pronUrlEn = pronUrlEn;
     }
 
     @Basic
-    @Column(name = "pronStrUs", nullable = false, length = 20)
+    @Column(name = "pronStrUs", nullable = true, length = 20)
     public String getPronStrUs() {
         return pronStrUs;
-    }
+    }//单词美式发音
 
     public void setPronStrUs(String pronStrUs) {
         this.pronStrUs = pronStrUs;
@@ -93,7 +96,7 @@ public class WordLibServer {
     @Column(name = "pronUrlUs", nullable = true, length = 255)
     public String getPronUrlUs() {
         return pronUrlUs;
-    }
+    }//单词美式发音地址
 
     public void setPronUrlUs(String pronUrlUs) {
         this.pronUrlUs = pronUrlUs;
@@ -103,17 +106,17 @@ public class WordLibServer {
     @Column(name = "pos1", nullable = true, length = 20)
     public String getPos1() {
         return pos1;
-    }
+    }//词性1
 
     public void setPos1(String pos1) {
         this.pos1 = pos1;
     }
 
     @Basic
-    @Column(name = "acceptation1", nullable = true, length = 20)
+    @Column(name = "acceptation1", nullable = true, length = 255)
     public String getAcceptation1() {
         return acceptation1;
-    }
+    }//词性1-解释
 
     public void setAcceptation1(String acceptation1) {
         this.acceptation1 = acceptation1;
@@ -123,17 +126,17 @@ public class WordLibServer {
     @Column(name = "pos2", nullable = true, length = 20)
     public String getPos2() {
         return pos2;
-    }
+    }//词性2
 
     public void setPos2(String pos2) {
         this.pos2 = pos2;
     }
 
     @Basic
-    @Column(name = "acceptation2", nullable = true, length = 20)
+    @Column(name = "acceptation2", nullable = true, length = 255)
     public String getAcceptation2() {
         return acceptation2;
-    }
+    }//词性2-解释
 
     public void setAcceptation2(String acceptation2) {
         this.acceptation2 = acceptation2;
@@ -143,17 +146,17 @@ public class WordLibServer {
     @Column(name = "pos3", nullable = true, length = 20)
     public String getPos3() {
         return pos3;
-    }
+    }//词性3
 
     public void setPos3(String pos3) {
         this.pos3 = pos3;
     }
 
     @Basic
-    @Column(name = "acceptation3", nullable = true, length = 20)
+    @Column(name = "acceptation3", nullable = true, length = 255)
     public String getAcceptation3() {
         return acceptation3;
-    }
+    }// 词性3-解释
 
     public void setAcceptation3(String acceptation3) {
         this.acceptation3 = acceptation3;
@@ -170,7 +173,7 @@ public class WordLibServer {
     }
 
     @Basic
-    @Column(name = "acceptation4", nullable = true, length = 20)
+    @Column(name = "acceptation4", nullable = true, length = 255)
     public String getAcceptation4() {
         return acceptation4;
     }
@@ -183,7 +186,7 @@ public class WordLibServer {
     @Column(name = "sentEn1", nullable = true, length = 255)
     public String getSentEn1() {
         return sentEn1;
-    }
+    }//英语例句
 
     public void setSentEn1(String sentEn1) {
         this.sentEn1 = sentEn1;
@@ -193,7 +196,7 @@ public class WordLibServer {
     @Column(name = "sentTrans1", nullable = true, length = 255)
     public String getSentTrans1() {
         return sentTrans1;
-    }
+    }//例句1-翻译
 
     public void setSentTrans1(String sentTrans1) {
         this.sentTrans1 = sentTrans1;

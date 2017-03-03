@@ -5,7 +5,20 @@
         "http://struts.apache.org/dtds/struts-2.3.dtd">
 
 <struts>
-    <package name="default" namespace="/" extends="struts-default">
+    <package name="encodingInterceptor" namespace="/" extends="struts-default">
+        <interceptors>
+            <interceptor name="Encoding" class="com.ljdc.interceptor.EncodingInterceptor"></interceptor>
+            <interceptor-stack name="Encode">
+                <interceptor-ref name="Encoding"></interceptor-ref>
+                <interceptor-ref name="defaultStack"></interceptor-ref><!-- 必须引入这个，否则request不会再往下传-->
+            </interceptor-stack>
+        </interceptors>
+        <default-interceptor-ref name="Encode"/><!--（这句是设置所有Action自动调用的拦截器堆栈）-->
+    </package>
+    <package name="verify" namespace="/verify" extends="encodingInterceptor">
         <action name="*" method="{1}" class="com.ljdc.action.LoginAction"/>
+    </package>
+    <package name="sync" namespace="/sync" extends="encodingInterceptor">
+        <action name="*" method="{1}" class="com.ljdc.action.SyncAction"/>
     </package>
 </struts>
