@@ -1,7 +1,9 @@
 package com.ljdc.pojo;
 
+import org.hibernate.annotations.GenericGenerator;
+
 import javax.persistence.*;
-import java.sql.Timestamp;
+import java.util.Date;
 
 /**
  * Created with IntelliJ IDEA
@@ -13,21 +15,74 @@ import java.sql.Timestamp;
 @Entity
 @Table(name = "learn_lib2", schema = "server_ljdc", catalog = "")
 public class LearnLib2Server {
-    private int learnLib2Id;
+    private String learnLib2Id;
     private int graspLevel;
-    private Timestamp updataTime;
-    private Timestamp modified;
+    private Date updataTime;
+    private Date modified;
     private Lib2MiddleSchoolServer lib2;
     private UserServer user;
 
+    private int statusModify;//接收客户端数据
+    private Date anchor;//接收客户端数据
+    private int userId; //用户ID
+    private int lib2Id; //词库1ID
+    private String oldId;//需要删除的不同步的记录ID
+
+    @Transient
+    public String getOldId() {
+        return oldId;
+    }
+
+    public void setOldId(String oldId) {
+        this.oldId = oldId;
+    }
+
+    @Transient
+    public int getStatusModify() {
+        return statusModify;
+    }
+
+    public void setStatusModify(int statusModify) {
+        this.statusModify = statusModify;
+    }
+
+    @Transient
+    public Date getAnchor() {
+        return anchor;
+    }
+
+    public void setAnchor(Date anchor) {
+        this.anchor = anchor;
+    }
+
+    @Transient
+    public int getUserId() {
+        return userId;
+    }
+
+    public void setUserId(int userId) {
+        this.userId = userId;
+    }
+
+    @Transient
+    public int getLib2Id() {
+        return lib2Id;
+    }
+
+    public void setLib2Id(int lib2Id) {
+        this.lib2Id = lib2Id;
+    }
+
+
     @Id
-    @GeneratedValue(strategy = GenerationType.IDENTITY)
+    @GeneratedValue(generator = "ASSIGN")
+    @GenericGenerator(name = "ASSIGN", strategy = "assigned")
     @Column(name = "learnLib2Id", nullable = false)
-    public int getLearnLib2Id() {
+    public String getLearnLib2Id() {
         return learnLib2Id;
     }
 
-    public void setLearnLib2Id(int learnLib2Id) {
+    public void setLearnLib2Id(String learnLib2Id) {
         this.learnLib2Id = learnLib2Id;
     }
 
@@ -43,21 +98,21 @@ public class LearnLib2Server {
 
     @Basic
     @Column(name = "updataTime", nullable = false)
-    public Timestamp getUpdataTime() {
+    public Date getUpdataTime() {
         return updataTime;
     }
 
-    public void setUpdataTime(Timestamp updataTime) {
+    public void setUpdataTime(Date updataTime) {
         this.updataTime = updataTime;
     }
 
     @Basic
     @Column(name = "modified", nullable = false)
-    public Timestamp getModified() {
+    public Date getModified() {
         return modified;
     }
 
-    public void setModified(Timestamp modified) {
+    public void setModified(Date modified) {
         this.modified = modified;
     }
 
@@ -78,14 +133,14 @@ public class LearnLib2Server {
 
     @Override
     public int hashCode() {
-        int result = learnLib2Id;
+        int result = learnLib2Id.hashCode();
         result = 31 * result + graspLevel;
         result = 31 * result + (updataTime != null ? updataTime.hashCode() : 0);
         result = 31 * result + (modified != null ? modified.hashCode() : 0);
         return result;
     }
 
-    @ManyToOne
+    @ManyToOne(fetch = FetchType.LAZY)
     @JoinColumn(name = "lib2Id", referencedColumnName = "lib2Id")
     public Lib2MiddleSchoolServer getLib2() {
         return lib2;
@@ -95,7 +150,7 @@ public class LearnLib2Server {
         this.lib2 = lib2;
     }
 
-    @ManyToOne
+    @ManyToOne(fetch = FetchType.LAZY)
     @JoinColumn(name = "userId", referencedColumnName = "userId")
     public UserServer getUser() {
         return user;

@@ -3,6 +3,8 @@ package com.ljdc.utils;
 import javax.servlet.http.HttpServletResponse;
 import java.io.IOException;
 import java.io.PrintWriter;
+import java.text.SimpleDateFormat;
+import java.util.Date;
 
 /**
  * Created with IntelliJ IDEA
@@ -28,5 +30,11 @@ public class Utils {
         }
         pw.flush();
         pw.close();
+    }
+
+    public static SimpleDateFormat getDateFormater(){
+        SimpleDateFormat sdf;//小写的mm表示的是分钟
+        sdf = new SimpleDateFormat("yyyy-MM-dd HH:mm:ss");
+        return sdf;
     }
 }

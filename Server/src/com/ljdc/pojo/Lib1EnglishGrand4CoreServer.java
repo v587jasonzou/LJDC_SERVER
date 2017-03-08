@@ -17,6 +17,14 @@ public class Lib1EnglishGrand4CoreServer {
     private Collection<LearnLib1Server> learnLib1;
     private WordLibServer wordLib;
 
+    public Lib1EnglishGrand4CoreServer() {
+    }
+
+    public Lib1EnglishGrand4CoreServer(int lib1Id) {
+        this.lib1Id = lib1Id;
+
+    }
+
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
     @Column(name = "lib1Id", nullable = false)

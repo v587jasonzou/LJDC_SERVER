@@ -23,6 +23,14 @@ public class UserServer {
     private Collection<LearnLib2Server> learnLib2;
     private Collection<WordDevelopmentServer> wordDevelopment;
 
+    public UserServer() {
+    }
+
+    public UserServer(int userId) {
+        this.userId = userId;
+
+    }
+
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
     @Column(name = "userId", nullable = false)
@@ -35,7 +43,7 @@ public class UserServer {
     }
 
     @Basic
-    @Column(name = "phone", nullable = true, length = 20  , unique = true)
+    @Column(name = "phone", nullable = true, length = 20, unique = true)
     public String getPhone() {
         return phone;
     }
@@ -55,7 +63,7 @@ public class UserServer {
     }
 
     @Basic
-    @Column(name = "email", nullable = true, length = 20 , unique = true)
+    @Column(name = "email", nullable = true, length = 20, unique = true)
     public String getEmail() {
         return email;
     }
@@ -112,7 +120,7 @@ public class UserServer {
         return result;
     }
 
-    @OneToMany(mappedBy = "user")
+    @OneToMany(mappedBy = "user",fetch = FetchType.LAZY)
     public Collection<LearnLib1Server> getLearnLib1() {
         return learnLib1;
     }
@@ -121,7 +129,7 @@ public class UserServer {
         this.learnLib1 = learnLib1;
     }
 
-    @OneToMany(mappedBy = "user")
+    @OneToMany(mappedBy = "user",fetch = FetchType.LAZY)
     public Collection<LearnLib2Server> getLearnLib2() {
         return learnLib2;
     }
@@ -130,7 +138,7 @@ public class UserServer {
         this.learnLib2 = learnLib2;
     }
 
-    @OneToMany(mappedBy = "user")
+    @OneToMany(mappedBy = "user",fetch = FetchType.LAZY)
     public Collection<WordDevelopmentServer> getWordDevelopment() {
         return wordDevelopment;
     }
@@ -139,6 +147,9 @@ public class UserServer {
         this.wordDevelopment = wordDevelopment;
     }
 
+    /**Lazy属性在调用时会执行SQL，可能出现递归执行（内存溢出），外键属性的getId除外
+     * @return
+     */
     @Override
     public String toString() {
         return "UserServer{" +
@@ -148,9 +159,6 @@ public class UserServer {
                 ", email='" + email + '\'' +
                 ", nickname='" + nickname + '\'' +
                 ", headImageUrl='" + headImageUrl + '\'' +
-                ", learnLib1ServersByUserId=" + learnLib1 +
-                ", learnLib2ServersByUserId=" + learnLib2 +
-                ", wordDevelopmentServersByUserId=" + wordDevelopment +
                 '}';
     }
 }

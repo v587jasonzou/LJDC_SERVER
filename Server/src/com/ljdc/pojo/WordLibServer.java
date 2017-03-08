@@ -322,7 +322,7 @@ public class WordLibServer {
         return result;
     }
 
-    @OneToMany(mappedBy = "wordLib")
+    @OneToMany(mappedBy = "wordLib",fetch = FetchType.LAZY)
     public Collection<Lib1EnglishGrand4CoreServer> getLib1() {
         return lib1;
     }
@@ -331,7 +331,7 @@ public class WordLibServer {
         this.lib1 = lib1;
     }
 
-    @OneToMany(mappedBy = "wordLib")
+    @OneToMany(mappedBy = "wordLib",fetch = FetchType.LAZY)
     public Collection<Lib2MiddleSchoolServer> getLib2() {
         return lib2;
     }

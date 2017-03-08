@@ -1,5 +1,7 @@
 package com.ljdc.pojo;
 
+import org.hibernate.annotations.GenericGenerator;
+
 import javax.persistence.*;
 import java.util.Date;
 
@@ -14,21 +16,63 @@ import java.util.Date;
 @Entity
 @Table(name = "word_development", schema = "server_ljdc", catalog = "")
 public class WordDevelopmentServer {
-    private int wordDevId;
+    private String wordDevId;
     private Integer wordsIncreaseNum;
     private Date wordIncreaseDate;
     private Integer graspLevel;
     private Date modified;
     private UserServer user;
 
+    private int statusModify;//接收客户端数据
+    private Date anchor;//接收客户端数据
+    private int userId; //用户ID
+    private String oldId;//需要删除的不同步的记录ID
+
+    @Transient
+    public int getStatusModify() {
+        return statusModify;
+    }
+
+    public void setStatusModify(int statusModify) {
+        this.statusModify = statusModify;
+    }
+
+    @Transient
+    public Date getAnchor() {
+        return anchor;
+    }
+
+    public void setAnchor(Date anchor) {
+        this.anchor = anchor;
+    }
+
+    @Transient
+    public int getUserId() {
+        return userId;
+    }
+
+    public void setUserId(int userId) {
+        this.userId = userId;
+    }
+
+    @Transient
+    public String getOldId() {
+        return oldId;
+    }
+
+    public void setOldId(String oldId) {
+        this.oldId = oldId;
+    }
+
     @Id
-    @GeneratedValue(strategy = GenerationType.IDENTITY)
+    @GeneratedValue(generator = "ASSIGN")
+    @GenericGenerator(name = "ASSIGN", strategy = "assigned")
     @Column(name = "wordDevId", nullable = false)
-    public int getWordDevId() {
+    public String getWordDevId() {
         return wordDevId;
     }
 
-    public void setWordDevId(int wordDevId) {
+    public void setWordDevId(String wordDevId) {
         this.wordDevId = wordDevId;
     }
 
@@ -92,7 +136,7 @@ public class WordDevelopmentServer {
 
     @Override
     public int hashCode() {
-        int result = wordDevId;
+        int result = wordDevId.hashCode();
         result = 31 * result + (wordsIncreaseNum != null ? wordsIncreaseNum.hashCode() : 0);
         result = 31 * result + (wordIncreaseDate != null ? wordIncreaseDate.hashCode() : 0);
         result = 31 * result + (graspLevel != null ? graspLevel.hashCode() : 0);
@@ -100,7 +144,7 @@ public class WordDevelopmentServer {
         return result;
     }
 
-    @ManyToOne
+    @ManyToOne(fetch = FetchType.LAZY)
     @JoinColumn(name = "userId", referencedColumnName = "userId")
     public UserServer getUser() {
         return user;
@@ -108,5 +152,21 @@ public class WordDevelopmentServer {
 
     public void setUser(UserServer userServerByUserId) {
         this.user = userServerByUserId;
+    }
+
+    @Override
+    public String toString() {
+        return "WordDevelopmentServer{" +
+                "wordDevId='" + wordDevId + '\'' +
+                ", wordsIncreaseNum=" + wordsIncreaseNum +
+                ", wordIncreaseDate=" + wordIncreaseDate +
+                ", graspLevel=" + graspLevel +
+                ", modified=" + modified +
+                ", statusModify=" + statusModify +
+                ", anchor=" + anchor +
+                ", userId_Client=" + userId +
+                ", oldId='" + oldId + '\'' +
+                ",userID_Server="+user.getUserId()+
+                '}';
     }
 }

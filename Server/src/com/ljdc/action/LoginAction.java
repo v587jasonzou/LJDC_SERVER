@@ -1,6 +1,7 @@
 package com.ljdc.action;
 
 import com.google.gson.Gson;
+import com.google.gson.GsonBuilder;
 import com.ljdc.bean.Message;
 import com.ljdc.pojo.UserServer;
 import com.ljdc.utils.SessionsUtil;
@@ -31,6 +32,14 @@ public class LoginAction extends ActionSupport implements ModelDriven<UserServer
     private UserServer user = new UserServer();
     private HttpServletResponse response;
     private HttpServletRequest request;
+
+    private static Gson gson;
+
+    static {
+        gson = new GsonBuilder()
+                .setDateFormat("yyyy-MM-dd HH:mm:ss") //java.util.Date的时间格式
+                .create();
+    }
 
     /**
      * 注册接口
@@ -68,8 +77,8 @@ public class LoginAction extends ActionSupport implements ModelDriven<UserServer
         Session session = SessionsUtil.getSession();
         Transaction ts = session.beginTransaction();
 
-        String hql = "from UserServer u where u.password = :parm1 and (u.phone = :parm2 or u.email = :parm4)";
-        Query query = session.createQuery(hql).setParameter("parm1", user.getPassword()).setParameter("parm2", user.getPhone()).setParameter("parm4", user.getEmail());
+        String hql = "from UserServer u where u.password = ? and (u.phone = ? or u.email = ?)";
+        Query query = session.createQuery(hql).setParameter(0, user.getPassword()).setParameter(1, user.getPhone()).setParameter(2, user.getEmail());
         List<UserServer> list = query.list();
         if (list.size() == 0) {
             //TODO 登录失败
@@ -80,7 +89,11 @@ public class LoginAction extends ActionSupport implements ModelDriven<UserServer
             //TODO 登录成功
             UserServer user = list.get(0);
             message.setCode(200);
-            message.setMsg(new Gson().toJson(user));
+            System.out.println("---------------------------------here");
+            user.setLearnLib1(null);
+            user.setLearnLib2(null);
+            user.setWordDevelopment(null);
+            message.setMsg(gson.toJson(user));
             System.out.println("message user : "+message.getMsg());
             Utils.printToBrowser(response, message.toString());
         }

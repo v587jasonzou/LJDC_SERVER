@@ -17,6 +17,13 @@ public class Lib2MiddleSchoolServer {
     private Collection<LearnLib2Server> learnLib2;
     private WordLibServer wordLib;
 
+    public Lib2MiddleSchoolServer(int lib2Id) {
+        this.lib2Id = lib2Id;
+    }
+
+    public Lib2MiddleSchoolServer() {
+    }
+
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
     @Column(name = "lib2Id", nullable = false)
@@ -45,7 +52,7 @@ public class Lib2MiddleSchoolServer {
         return lib2Id;
     }
 
-    @OneToMany(mappedBy = "lib2")
+    @OneToMany(mappedBy = "lib2",fetch = FetchType.LAZY)
     public Collection<LearnLib2Server> getLearnLib2() {
         return learnLib2;
     }
@@ -54,7 +61,7 @@ public class Lib2MiddleSchoolServer {
         this.learnLib2 = learnLib2;
     }
 
-    @ManyToOne
+    @ManyToOne(fetch = FetchType.LAZY)
     @JoinColumn(name = "wordId", referencedColumnName = "wordId", nullable = false)
     public WordLibServer getWordLib() {
         return wordLib;
