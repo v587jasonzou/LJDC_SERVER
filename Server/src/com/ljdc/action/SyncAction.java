@@ -19,6 +19,7 @@ import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
 import java.text.ParseException;
 import java.text.SimpleDateFormat;
+import java.util.ArrayList;
 import java.util.Date;
 import java.util.List;
 
@@ -52,6 +53,11 @@ public class SyncAction extends ActionSupport implements ServletResponseAware, S
      * 客户端最最近更新时间
      */
     private String maxAnchor;
+    /**
+     * 【param】
+     * 用户ID
+     */
+    private int userId;
     private HttpServletResponse response;
     private HttpServletRequest request;
 
@@ -74,6 +80,14 @@ public class SyncAction extends ActionSupport implements ServletResponseAware, S
      */
     public void setMaxAnchor(String maxAnchor) {
         this.maxAnchor = maxAnchor.equals("") ? "1970-01-01 08:00:00" : maxAnchor;//new Date(0) -> "1970-01-01 08:00:00"
+    }
+
+    public int getUserId() {
+        return userId;
+    }
+
+    public void setUserId(String userId) {
+        this.userId = Integer.valueOf(userId);
     }
 
     /**
@@ -135,14 +149,14 @@ public class SyncAction extends ActionSupport implements ServletResponseAware, S
             //step2: TODO
             if (datas.size() > 0) {
                 for (LearnLib1Server data : datas) {
-                    query.setParameter(0, data.getUserId()).setParameter(1, data.getLib1Id()).setParameter(2,data.getLearnLib1Id());
+                    query.setParameter(0, data.getUserId()).setParameter(1, data.getLib1Id()).setParameter(2, data.getLearnLib1Id());
                     list = query.list();
                     System.out.println("是否存在相同记录 :" + (list.size() == 0 ? "false" : "true"));
                     if (list.size() == 0 && data.getAnchor().compareTo(new Date(0)) <= 0) {  //不是多客户端同时新增一个记录的情况：直接新增记录
                         System.out.println("新增记录LearnLib1");
                         //关系映射
-                        data.setUser((UserServer) session.load(UserServer.class,data.getUserId()));
-                        data.setLib1((Lib1EnglishGrand4CoreServer) session.load(Lib1EnglishGrand4CoreServer.class,data.getLib1Id()));
+                        data.setUser((UserServer) session.load(UserServer.class, data.getUserId()));
+                        data.setLib1((Lib1EnglishGrand4CoreServer) session.load(Lib1EnglishGrand4CoreServer.class, data.getLib1Id()));
                         //同步管理，响应值
                         Date date = new Date();
                         data.setModified(date);
@@ -153,8 +167,8 @@ public class SyncAction extends ActionSupport implements ServletResponseAware, S
 //                        data.setLearnLib1Id(serverLearnLib1.getLearnLib1Id()); 第一次保存用的是客户端传来的ID
                         System.out.println("修改记录LearnLib1");
                         //关系映射
-                        data.setUser((UserServer) session.load(UserServer.class,data.getUserId()));
-                        data.setLib1((Lib1EnglishGrand4CoreServer) session.load(Lib1EnglishGrand4CoreServer.class,data.getLib1Id()));
+                        data.setUser((UserServer) session.load(UserServer.class, data.getUserId()));
+                        data.setLib1((Lib1EnglishGrand4CoreServer) session.load(Lib1EnglishGrand4CoreServer.class, data.getLib1Id()));
                         //同步管理，响应值
                         Date date = new Date();
                         data.setModified(date);
@@ -236,7 +250,8 @@ public class SyncAction extends ActionSupport implements ServletResponseAware, S
         List<LearnLib2Server> list, datas;
         LearnLib2Server serverLearnLib2 = null;
         String hql = "from LearnLib2Server t where t.user.userId = ? and t.lib2.lib2Id = ? or t.learnLib2Id = ?";
-        datas = gson.fromJson(syncJsonData, new TypeToken<List<LearnLib2Server>>() {}.getType());
+        datas = gson.fromJson(syncJsonData, new TypeToken<List<LearnLib2Server>>() {
+        }.getType());
 
         try {
             session = SessionsUtil.newSession();
@@ -251,14 +266,14 @@ public class SyncAction extends ActionSupport implements ServletResponseAware, S
             //step2: TODO
             if (datas.size() > 0) {
                 for (LearnLib2Server data : datas) {
-                    query.setParameter(0, data.getUserId()).setParameter(1, data.getLib2Id()).setParameter(2,data.getLearnLib2Id());
+                    query.setParameter(0, data.getUserId()).setParameter(1, data.getLib2Id()).setParameter(2, data.getLearnLib2Id());
                     list = query.list();
                     System.out.println("是否存在相同记录 :" + (list.size() == 0 ? "false" : "true"));
                     if (list.size() == 0 && data.getAnchor().compareTo(new Date(0)) <= 0) {  //不是多客户端同时新增一个记录的情况：直接新增记录
                         System.out.println("新增记录LearnLib2");
                         //关系映射
-                        data.setUser((UserServer) session.load(UserServer.class,data.getUserId()));
-                        data.setLib2((Lib2MiddleSchoolServer) session.load(Lib2MiddleSchoolServer.class,data.getLib2Id()));
+                        data.setUser((UserServer) session.load(UserServer.class, data.getUserId()));
+                        data.setLib2((Lib2MiddleSchoolServer) session.load(Lib2MiddleSchoolServer.class, data.getLib2Id()));
                         //同步管理，响应值
                         Date date = new Date();
                         data.setModified(date);
@@ -269,8 +284,8 @@ public class SyncAction extends ActionSupport implements ServletResponseAware, S
 //                        data.setLearnLib1Id(serverLearnLib1.getLearnLib1Id()); 第一次保存用的是客户端传来的ID
                         System.out.println("修改记录LearnLib2");
                         //关系映射
-                        data.setUser((UserServer) session.load(UserServer.class,data.getUserId()));
-                        data.setLib2((Lib2MiddleSchoolServer) session.load(Lib2MiddleSchoolServer.class,data.getLib2Id()));
+                        data.setUser((UserServer) session.load(UserServer.class, data.getUserId()));
+                        data.setLib2((Lib2MiddleSchoolServer) session.load(Lib2MiddleSchoolServer.class, data.getLib2Id()));
                         //同步管理，响应值
                         Date date = new Date();
                         data.setModified(date);
@@ -350,7 +365,7 @@ public class SyncAction extends ActionSupport implements ServletResponseAware, S
 
         List<WordDevelopmentServer> list, datas;
         WordDevelopmentServer serverWordDev = null;
-        String hql = "from WordDevelopmentServer t where t.graspLevel = ? and t.wordIncreaseDate = ? or t.wordDevId = ?";
+        String hql = "from WordDevelopmentServer t where t.graspLevel = ? and t.wordIncreaseDate = ? and t.user.userId = ? or t.wordDevId = ?";
         datas = gson.fromJson(syncJsonData, new TypeToken<List<WordDevelopmentServer>>() {
         }.getType());
         try {
@@ -362,12 +377,12 @@ public class SyncAction extends ActionSupport implements ServletResponseAware, S
             //step1:客户端需要同步的服务器的最新数据
             SimpleDateFormat sdf = new SimpleDateFormat("yyyy-MM-dd HH:mm:ss");//小写的mm表示的是分钟
             Date maxAnchorDate = sdf.parse(maxAnchor);
-            List<WordDevelopmentServer> wordDevelopmentServers_new = session.createQuery("from WordDevelopmentServer where modified > ?").setParameter(0, maxAnchorDate).list();
+            List<WordDevelopmentServer> wordDevelopmentServers_new = session.createQuery("from WordDevelopmentServer where modified > ? and user.userId = ?").setParameter(0, maxAnchorDate).setParameter(1, userId).list();
             System.out.println("wordDev_new start : " + wordDevelopmentServers_new.size());
             //step2:
             if (datas.size() > 0) {
                 for (WordDevelopmentServer data : datas) {
-                    query.setParameter(0, data.getGraspLevel()).setParameter(1, data.getWordIncreaseDate()).setParameter(2, data.getWordDevId());
+                    query.setParameter(0, data.getGraspLevel()).setParameter(1, data.getWordIncreaseDate()).setParameter(2, data.getUserId()).setParameter(3, data.getWordDevId());
                     list = query.list();
                     System.out.println("是否存在相同记录 :" + (list.size() == 0 ? "false" : "true"));
                     if (list.size() == 0 && data.getAnchor().compareTo(new Date(0)) <= 0) {  //不是多客户端同时新增一个记录的情况：直接新增记录
@@ -439,6 +454,154 @@ public class SyncAction extends ActionSupport implements ServletResponseAware, S
             message.setMsg("服务器貌似遇到一点点小麻烦，请稍后重试");
             Utils.printToBrowser(response, message.toString());
             System.out.println("message WordDevelopmentServer: " + message.getMsg());
+        } catch (ParseException e) {
+            e.printStackTrace();
+        } finally {
+            SessionsUtil.closeNewSession(session);
+        }
+
+        return null;
+    }
+
+    public String syncStudyPlan() {
+        System.out.println("REQUEST URI: " + request.getRequestURI());
+        System.out.println("parm \"syncJsonData\" : " + syncJsonData);
+        System.out.println("parm \"maxAnchor\" : " + maxAnchor);
+        Session session = null;
+
+        List<StudyPlan> list, datas;
+        StudyPlan serverStudyPlan = null;
+        String hql = "from StudyPlan t where t.user.userId = ?";
+        datas = gson.fromJson(syncJsonData, new TypeToken<List<StudyPlan>>() {
+        }.getType());
+        try {
+            session = SessionsUtil.newSession();
+            ts = session.beginTransaction();
+            query = session.createQuery(hql);
+
+            //step1:客户端需要同步的服务器的最新数据
+            Date maxAnchorDate = Utils.getDateFormater().parse(maxAnchor);
+            List<StudyPlan> studyPlen_new = session.createQuery("from StudyPlan where modified > ? and user.userId = ?").setParameter(0, maxAnchorDate).setParameter(1, userId).list();
+            System.out.println("studyPlan_new start : " + studyPlen_new.size());
+            //step2:
+            if (datas.size() > 0) {
+                for (StudyPlan data : datas) {
+                    query.setParameter(0, data.getUserId());
+                    list = query.list();
+                    System.out.println("是否存在相同记录 :" + (list.size() == 0 ? "false" : "true"));
+                    if (list.size() == 0 && data.getAnchor().compareTo(new Date(0)) <= 0) {  //不是多客户端同时新增一个记录的情况：直接新增记录
+                        System.out.println("新增记录StudyPlan");
+                        //关系映射
+                        data.setUser((UserServer) session.load(UserServer.class, data.getUserId()));
+                        //同步管理，响应值
+                        Date date = new Date();
+                        data.setModified(date);
+                        data.setAnchor(date);
+                        data.setStatus(9);
+                        session.save(data);
+                    } else if (list.size() != 0 && data.getAnchor().compareTo(list.get(0).getModified()) == 0 && data.getStatus() == 1) { //修改记录
+                        System.out.println("修改记录StudyPlan");
+                        //关系映射
+                        data.setUser((UserServer) session.load(UserServer.class, data.getUserId()));
+                        //同步管理，响应值
+                        Date date = new Date();
+                        data.setModified(date);
+                        data.setAnchor(date);
+                        data.setStatus(9);
+                        session.evict(list.get(0));//更新操作，之前可能查找到一个相同ID的记录，必须取消与Session的关联，否则跑出异常
+                        session.update(data);
+                    } else if (list.size() != 0 && data.getAnchor().compareTo(list.get(0).getModified()) < 0) {//客户端需要先进行同步（强行同步客户端）
+                        System.out.println("删除客户端记录StudyPlan");
+                        serverStudyPlan = list.get(0);//服务器端记录
+                        //记录客户端需要删除的不同步记录
+                        if (!data.getPlanId().equals(serverStudyPlan.getPlanId()))
+                            serverStudyPlan.setOldId(data.getPlanId());
+                        //ORM映射关系 对象->属性
+                        serverStudyPlan.setUserId(serverStudyPlan.getUser().getUserId());
+                        //同步管理，响应值
+                        serverStudyPlan.setAnchor(serverStudyPlan.getModified());
+                        serverStudyPlan.setStatus(9);
+
+                        datas.remove(data);//移除
+                        if (studyPlen_new.contains(serverStudyPlan))
+                            studyPlen_new.remove(serverStudyPlan);//去掉客户端存在的情况，只保留服务器端单独存在的数据
+                        datas.add(serverStudyPlan);
+                    }
+                }
+                ts.commit();
+            }
+
+            //将只存在于服务器的数据添加到返回信息中
+            System.out.println("studyPlan_new end : " + studyPlen_new.size());
+            if (studyPlen_new.size() != 0) {
+                for (StudyPlan data : studyPlen_new) {
+                    System.out.println("data.toString() :" + data.toString());
+                    data.setAnchor(data.getModified());
+                    data.setStatus(9);
+                    UserServer user = data.getUser();
+                    data.setUserId(user.getUserId());
+                    datas.add(data);
+                }
+            }
+            for (StudyPlan data : datas) {//在使用GSON之前，去掉与关系属性的关系，设置为NULL
+                data.setUser(null);
+            }
+            message.setCode(204);//更新过程中遇到数据版本冲突，客户端数据需要强制更新
+            message.setMsg(gson.toJson(datas));
+            Utils.printToBrowser(response, message.toString());
+            System.out.println("message StudyPlan: " + message.getMsg());
+
+        } catch (HibernateException e) {
+            e.printStackTrace();
+            message.setCode(400);
+            message.setMsg("服务器貌似遇到一点点小麻烦，请稍后重试");
+            Utils.printToBrowser(response, message.toString());
+            System.out.println("message StudyPlan: " + message.getMsg());
+        } catch (ParseException e) {
+            e.printStackTrace();
+        } finally {
+            SessionsUtil.closeNewSession(session);
+        }
+
+        return null;
+    }
+
+    public String syncLibs() {
+        System.out.println("REQUEST URI: " + request.getRequestURI());
+        System.out.println("parm \"syncJsonData\" : " + syncJsonData);
+        System.out.println("parm \"maxAnchor\" : " + maxAnchor);
+        Session session = null;
+
+        List<Libs> list, datas = null;//客户端传来的JSON数据应该为""
+        try {
+            session = SessionsUtil.newSession();
+            ts = session.beginTransaction();
+
+            //step1:客户端需要同步的服务器的最新数据
+            Date maxAnchorDate = Utils.getDateFormater().parse(maxAnchor);
+            List<Libs> libs_new = session.createQuery("from Libs where modified > ?").setParameter(0, maxAnchorDate).list();
+            //将只存在于服务器的数据添加到返回信息中
+            System.out.println("libs_new end : " + libs_new.size());
+            if (libs_new.size() != 0) {
+                datas = new ArrayList<>();
+                for (Libs data : libs_new) {
+                    System.out.println("data.toString() :" + data.toString());
+                    data.setAnchor(data.getModified());
+                    data.setStatus(9);
+                    datas.add(data);
+                }
+            }
+            message.setCode(205);//更新过程中遇到数据版本冲突，客户端数据需要强制更新
+            message.setMsg(gson.toJson(datas));
+            Utils.printToBrowser(response, message.toString());
+            System.out.println("message Libs: " + message.getMsg());
+
+        } catch (HibernateException e) {
+            e.printStackTrace();
+            message.setCode(400);
+            message.setMsg("服务器貌似遇到一点点小麻烦，请稍后重试");
+            Utils.printToBrowser(response, message.toString());
+            System.out.println("message Libs: " + message.getMsg());
         } catch (ParseException e) {
             e.printStackTrace();
         } finally {

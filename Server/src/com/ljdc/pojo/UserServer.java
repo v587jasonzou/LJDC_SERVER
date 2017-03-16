@@ -22,6 +22,7 @@ public class UserServer {
     private Collection<LearnLib1Server> learnLib1;
     private Collection<LearnLib2Server> learnLib2;
     private Collection<WordDevelopmentServer> wordDevelopment;
+    private Collection<StudyPlan> studyPlen;
 
     public UserServer() {
     }
@@ -145,6 +146,15 @@ public class UserServer {
 
     public void setWordDevelopment(Collection<WordDevelopmentServer> wordDevelopment) {
         this.wordDevelopment = wordDevelopment;
+    }
+
+    @OneToMany(mappedBy = "user",fetch = FetchType.LAZY)//懒加载对象，一旦被调用就会执行SQL，例如被GSON解析时调用，
+    public Collection<StudyPlan> getStudyPlen() {
+        return studyPlen;
+    }
+
+    public void setStudyPlen(Collection<StudyPlan> studyPlen) {
+        this.studyPlen = studyPlen;
     }
 
     /**Lazy属性在调用时会执行SQL，可能出现递归执行（内存溢出），外键属性的getId除外

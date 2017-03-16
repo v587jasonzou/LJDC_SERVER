@@ -23,6 +23,8 @@
         <mapping class="com.ljdc.pojo.UserServer"/>
         <mapping class="com.ljdc.pojo.WordDevelopmentServer"/>
         <mapping class="com.ljdc.pojo.WordLibServer"/>
+        <mapping class="com.ljdc.pojo.StudyPlan"/>
+        <mapping class="com.ljdc.pojo.Libs"/>
 
 
     </session-factory>

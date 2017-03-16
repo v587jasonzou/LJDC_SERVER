@@ -93,6 +93,7 @@ public class LoginAction extends ActionSupport implements ModelDriven<UserServer
             user.setLearnLib1(null);
             user.setLearnLib2(null);
             user.setWordDevelopment(null);
+            user.setStudyPlen(null);
             message.setMsg(gson.toJson(user));
             System.out.println("message user : "+message.getMsg());
             Utils.printToBrowser(response, message.toString());
