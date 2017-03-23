@@ -611,6 +611,71 @@ public class SyncAction extends ActionSupport implements ServletResponseAware, S
         return null;
     }
 
+    public String syncUsers() {
+        System.out.println("REQUEST URI: " + request.getRequestURI());
+        System.out.println("parm \"syncJsonData\" : " + syncJsonData);
+        System.out.println("parm \"maxAnchor\" : " + maxAnchor);
+        Session session = null;
+
+        List<UserServer> list; //服务器端查询结果
+        List<UserServer> datas;//客户端更新数据
+        String hql = "from UserServer t where t.userId = ?";
+        datas = gson.fromJson(syncJsonData, new TypeToken<List<UserServer>>() {
+        }.getType());
+        try {
+            session = SessionsUtil.newSession();
+            ts = session.beginTransaction();
+            query = session.createQuery(hql);
+            //同步操作:
+            if (datas.size() > 0) {
+                for (UserServer data : datas) {
+                    query.setParameter(0, data.getUserId());
+                    list = query.list();
+                    System.out.println("是否存在相同记录 :" + (list.size() == 0 ? "false" : "true"));
+                    if (list.size() != 0 && data.getAnchor().compareTo(list.get(0).getModified()) == 0 && data.getStatus() == 1) { //Client修改记录
+                        System.out.println("修改记录StudyPlan");
+                        //同步管理，响应值
+                        Date date = new Date();
+                        data.setModified(date);
+                        data.setAnchor(date);
+                        data.setStatus(9);
+                        session.evict(list.get(0));//更新操作，之前可能查找到一个相同ID的记录，必须取消与Session的关联，否则跑出异常
+                        session.update(data);
+                    } else if (list.size() != 0 && data.getAnchor().compareTo(list.get(0).getModified()) < 0) {//客户端2先进行了更新，客户端1需要先同步客户端2的更新
+                        UserServer user = list.get(0);//服务器端记录
+                        //同步管理，响应值
+                        user.setAnchor(user.getModified());
+                        user.setStatus(9);
+                        datas.remove(data);//移除
+                        datas.add(user);
+                    }
+                }
+                ts.commit();
+            }
+            for (UserServer data : datas) {//在使用GSON之前，去掉与关系属性的关系，设置为NULL
+                data.setStudyPlen(null);
+                data.setWordDevelopment(null);
+                data.setLearnLib1(null);
+                data.setLearnLib2(null);
+            }
+            message.setCode(206);//更新过程中遇到数据版本冲突，客户端数据需要强制更新
+            message.setMsg(gson.toJson(datas));
+            Utils.printToBrowser(response, message.toString());
+            System.out.println("message users:json " + message.getMsg());
+
+        } catch (HibernateException e) {
+            e.printStackTrace();
+            message.setCode(400);
+            message.setMsg("服务器貌似遇到一点点小麻烦，请稍后重试");
+            Utils.printToBrowser(response, message.toString());
+            System.out.println("message user:json -> " + message.getMsg());
+        } finally {
+            SessionsUtil.closeNewSession(session);
+        }
+
+        return null;
+    }
+
     /**
      * Sets the HTTP response object in implementing classes.
      *

@@ -2,6 +2,7 @@ package com.ljdc.pojo;
 
 import javax.persistence.*;
 import java.util.Collection;
+import java.util.Date;
 
 /**
  * Created with IntelliJ IDEA
@@ -23,6 +24,11 @@ public class UserServer {
     private Collection<LearnLib2Server> learnLib2;
     private Collection<WordDevelopmentServer> wordDevelopment;
     private Collection<StudyPlan> studyPlen;
+
+    private Date modified;
+    //不参与持久化
+    private int status;//同步状态
+    private Date anchor;//同步锚点
 
     public UserServer() {
     }
@@ -155,6 +161,34 @@ public class UserServer {
 
     public void setStudyPlen(Collection<StudyPlan> studyPlen) {
         this.studyPlen = studyPlen;
+    }
+
+    @Basic
+    @Column(name = "modified")
+    public Date getModified() {
+        return modified;
+    }
+
+    public void setModified(Date modified) {
+        this.modified = modified;
+    }
+
+    @Transient
+    public int getStatus() {
+        return status;
+    }
+
+    public void setStatus(int status) {
+        this.status = status;
+    }
+
+    @Transient
+    public Date getAnchor() {
+        return anchor;
+    }
+
+    public void setAnchor(Date anchor) {
+        this.anchor = anchor;
     }
 
     /**Lazy属性在调用时会执行SQL，可能出现递归执行（内存溢出），外键属性的getId除外

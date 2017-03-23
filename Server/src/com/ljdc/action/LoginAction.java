@@ -16,6 +16,7 @@ import org.hibernate.Transaction;
 
 import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
+import java.util.Date;
 import java.util.List;
 
 
@@ -51,6 +52,7 @@ public class LoginAction extends ActionSupport implements ModelDriven<UserServer
         System.out.println("User info: "+user.toString());
         Session session = SessionsUtil.getSession();
         Transaction ts = session.beginTransaction();
+        user.setModified(new Date());
         int newId = (int) session.save(user);
         ts.commit();
         SessionsUtil.closeSession();
