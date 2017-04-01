@@ -677,6 +677,62 @@ public class SyncAction extends ActionSupport implements ServletResponseAware, S
     }
 
     /**
+     * 同步词汇评估(客户端不能更改词汇评估内容),一旦该表有变动，
+     * 客户端需要清空之前的数据，重新导入此表
+     *
+     * @return
+     */
+    public String syncWordEvaluation() {
+        System.out.println("REQUEST URI: " + request.getRequestURI());
+        System.out.println("parm \"syncJsonData\" : " + syncJsonData);
+        System.out.println("parm \"maxAnchor\" : " + maxAnchor);
+        Session session = null;
+
+        //客户端传来的JSON数据应该为""
+        List<WordEvaluation> datas = null;
+        try {
+            session = SessionsUtil.newSession();
+            ts = session.beginTransaction();
+
+            //step1:客户端需要同步的服务器的最新数据
+            Date maxAnchorDate = Utils.getDateFormater().parse(maxAnchor);
+
+            long count = (long) session.createQuery("SELECT count (*) from WordEvaluation where modified > ?").setParameter(0, maxAnchorDate).uniqueResult();
+            datas = new ArrayList<>();
+            if (count != 0) {
+                List<WordEvaluation> serverData = session.createQuery("from WordEvaluation").list();
+                //将只存在于服务器的数据添加到返回信息中
+                for (WordEvaluation data : serverData) {
+                    System.out.println("data.toString() :" + data.toString());
+                    data.setWordLib(null);//将关联对象置NULL
+
+                    data.setAnchor(data.getModified());
+                    data.setStatus(9);
+                    datas.add(data);
+                }
+            }
+
+            message.setCode(207);//更新过程中遇到数据版本冲突，客户端数据需要强制更新
+            message.setMsg(gson.toJson(datas));
+            Utils.printToBrowser(response, message.toString());
+            System.out.println("message WordEvaluation: " + message.getMsg());
+
+        } catch (HibernateException e) {
+            e.printStackTrace();
+            message.setCode(400);
+            message.setMsg("服务器貌似遇到一点点小麻烦，请稍后重试");
+            Utils.printToBrowser(response, message.toString());
+            System.out.println("message WordEvaluation: " + message.getMsg());
+        } catch (ParseException e) {
+            e.printStackTrace();
+        } finally {
+            SessionsUtil.closeNewSession(session);
+        }
+
+        return null;
+    }
+
+    /**
      * Sets the HTTP response object in implementing classes.
      *
      * @param response the HTTP response.

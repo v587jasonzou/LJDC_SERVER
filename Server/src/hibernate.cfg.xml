@@ -25,6 +25,7 @@
         <mapping class="com.ljdc.pojo.WordLibServer"/>
         <mapping class="com.ljdc.pojo.StudyPlan"/>
         <mapping class="com.ljdc.pojo.Libs"/>
+        <mapping class="com.ljdc.pojo.WordEvaluation"/>
 
 
     </session-factory>

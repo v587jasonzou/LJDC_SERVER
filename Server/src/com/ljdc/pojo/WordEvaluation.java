@@ -1,68 +1,38 @@
 package com.ljdc.pojo;
 
 import javax.persistence.*;
-import java.util.Collection;
+import java.util.Date;
 
 /**
  * Created with IntelliJ IDEA
  * User:邹旭
- * Date:2017/2/22 0022
- * Time:下午 7:57
- * Desc:略
+ * DateTime:2017/4/1 14:52
+ * Desc:词汇量预估
  */
 @Entity
-@Table(name = "lib1", schema = "server_ljdc", catalog = "")
-public class Lib1EnglishGrand4CoreServer {
-    private int lib1Id;
-    private Collection<LearnLib1Server> learnLib1;
+@Table(name = "word_evalution", schema = "server_ljdc", catalog = "")
+public class WordEvaluation {
+    private int evaluationId;
     private WordLibServer wordLib;
+    private int level;//预估词汇的等级（1-9）
 
-    public Lib1EnglishGrand4CoreServer() {
-    }
-
-    public Lib1EnglishGrand4CoreServer(int lib1Id) {
-        this.lib1Id = lib1Id;
-
-    }
+    private Date modified;
+    //不参与持久化
+    private int status;//同步状态
+    private Date anchor;//同步锚点
 
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
-    @Column(name = "lib1Id", nullable = false)
-    public int getLib1Id() {
-        return lib1Id;
+    @Column(name = "evaluationId", nullable = false)
+    public int getEvaluationId() {
+        return evaluationId;
     }
 
-    public void setLib1Id(int lib1Id) {
-        this.lib1Id = lib1Id;
+    public void setEvaluationId(int evaluationId) {
+        this.evaluationId = evaluationId;
     }
 
-    @Override
-    public boolean equals(Object o) {
-        if (this == o) return true;
-        if (o == null || getClass() != o.getClass()) return false;
-
-        Lib1EnglishGrand4CoreServer that = (Lib1EnglishGrand4CoreServer) o;
-
-        if (lib1Id != that.lib1Id) return false;
-
-        return true;
-    }
-
-    @Override
-    public int hashCode() {
-        return lib1Id;
-    }
-
-    @OneToMany(mappedBy = "lib1")
-    public Collection<LearnLib1Server> getLearnLib1() {
-        return learnLib1;
-    }
-
-    public void setLearnLib1(Collection<LearnLib1Server> learnLib1) {
-        this.learnLib1 = learnLib1;
-    }
-
-    @ManyToOne
+    @OneToOne
     @JoinColumn(name = "wordId", referencedColumnName = "wordId", nullable = false)
     public WordLibServer getWordLib() {
         return wordLib;
@@ -70,5 +40,43 @@ public class Lib1EnglishGrand4CoreServer {
 
     public void setWordLib(WordLibServer wordLib) {
         this.wordLib = wordLib;
+    }
+
+    @Basic
+    @Column(name = "level",nullable = false)//columnDefinition ="INT default 1"
+    public int getLevel() {
+        return level;
+    }
+
+    public void setLevel(int level) {
+        this.level = level;
+    }
+
+    @Basic
+    @Column(name = "modified")
+    public Date getModified() {
+        return modified;
+    }
+
+    public void setModified(Date modified) {
+        this.modified = modified;
+    }
+
+    @Transient
+    public int getStatus() {
+        return status;
+    }
+
+    public void setStatus(int status) {
+        this.status = status;
+    }
+
+    @Transient
+    public Date getAnchor() {
+        return anchor;
+    }
+
+    public void setAnchor(Date anchor) {
+        this.anchor = anchor;
     }
 }
