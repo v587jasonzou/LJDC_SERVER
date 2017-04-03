@@ -703,11 +703,12 @@ public class SyncAction extends ActionSupport implements ServletResponseAware, S
                 List<WordEvaluation> serverData = session.createQuery("from WordEvaluation").list();
                 //将只存在于服务器的数据添加到返回信息中
                 for (WordEvaluation data : serverData) {
-                    System.out.println("data.toString() :" + data.toString());
-                    data.setWordLib(null);//将关联对象置NULL
-
+                    //ORM映射关系 对象->属性
+                    data.setWordId(data.getWordLib().getWordId());
                     data.setAnchor(data.getModified());
                     data.setStatus(9);
+
+                    data.setWordLib(null);//将关联对象置NULL
                     datas.add(data);
                 }
             }

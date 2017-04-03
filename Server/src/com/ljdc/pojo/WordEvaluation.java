@@ -20,6 +20,7 @@ public class WordEvaluation {
     //不参与持久化
     private int status;//同步状态
     private Date anchor;//同步锚点
+    private int wordId; //传递外键ID
 
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
@@ -32,8 +33,8 @@ public class WordEvaluation {
         this.evaluationId = evaluationId;
     }
 
-    @OneToOne
-    @JoinColumn(name = "wordId", referencedColumnName = "wordId", nullable = false)
+    @OneToOne(fetch = FetchType.LAZY)
+    @JoinColumn(name = "wordId", referencedColumnName = "wordId")
     public WordLibServer getWordLib() {
         return wordLib;
     }
@@ -78,5 +79,14 @@ public class WordEvaluation {
 
     public void setAnchor(Date anchor) {
         this.anchor = anchor;
+    }
+
+    @Transient
+    public int getWordId() {
+        return wordId;
+    }
+
+    public void setWordId(int wordId) {
+        this.wordId = wordId;
     }
 }
