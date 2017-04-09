@@ -1,8 +1,10 @@
 package com.ljdc.utils;
 
+import com.google.gson.Gson;
+import com.google.gson.GsonBuilder;
+
 import javax.servlet.http.HttpServletResponse;
-import java.io.IOException;
-import java.io.PrintWriter;
+import java.io.*;
 import java.text.SimpleDateFormat;
 import java.util.Date;
 
@@ -15,13 +17,15 @@ import java.util.Date;
  */
 public class Utils {
 
-    /**向浏览器返回字符串数据
+    /**
+     * 向浏览器返回字符串数据
+     *
      * @param response
      * @param stream
      */
     public static void printToBrowser(HttpServletResponse response, String stream) {
         response.setCharacterEncoding("utf-8");
-        PrintWriter pw=null;
+        PrintWriter pw = null;
         try {
             pw = response.getWriter();
             pw.write(stream);
@@ -32,9 +36,33 @@ public class Utils {
         pw.close();
     }
 
-    public static SimpleDateFormat getDateFormater(){
+    public static SimpleDateFormat getDateFormater() {
         SimpleDateFormat sdf;//小写的mm表示的是分钟
         sdf = new SimpleDateFormat("yyyy-MM-dd HH:mm:ss");
         return sdf;
     }
+
+    public static Gson getGsonForDate() {
+        Gson gson = new GsonBuilder()
+                .setDateFormat("yyyy-MM-dd HH:mm:ss") //java.util.Date的时间格式
+                .create();
+        return gson;
+    }
+
+    public static String getStringFromFile(File file) {
+
+        StringBuffer sb = new StringBuffer();
+        try {
+            BufferedReader br = new BufferedReader(new InputStreamReader(new FileInputStream(file), "UTF-8"));
+            String next = "";
+            while (null != (next = br.readLine())) {
+                sb.append(next);
+            }
+        } catch (Exception e) {
+            e.printStackTrace();
+            sb.delete(0, sb.length());
+        }
+        return sb.toString().trim();
+    }
+
 }

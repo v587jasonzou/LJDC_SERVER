@@ -21,4 +21,31 @@
     <package name="sync" namespace="/sync" extends="encodingInterceptor">
         <action name="*" method="{1}" class="com.ljdc.action.SyncAction"/>
     </package>
+
+    <package name="web" namespace="/web" extends="encodingInterceptor">
+        <action name="test" method="test" class="com.ljdc.action.Test">
+            <result name="success">/jsp/welcome.jsp</result>
+        </action>
+        <action name="upload" class="com.ljdc.action.FileUploadAction"/>
+        <action name="login" class="com.ljdc.action.AdminLoginAction">
+            <result name="success" type="redirect">/index.html</result>
+            <result name="error" type="redirect">/login.html</result>
+        </action>
+        <action name="libList" method="libList" class="com.ljdc.action.LibListAction"/>
+        <action name="libs" method="libs" class="com.ljdc.action.LibListAction">
+            <result name="success">
+                /jsp/category_list.jsp
+            </result>
+        </action>
+        <action name="dellib" method="dellib" class="com.ljdc.action.LibListAction">
+            <result name="success" type="redirect">
+                /jsp/category_list.jsp
+            </result>
+        </action>
+        <action name="libupload" method="libupload" class="com.ljdc.action.LibUploadAction">
+            <result name="success" type="redirect">
+                libs.action
+            </result>
+        </action>
+    </package>
 </struts>

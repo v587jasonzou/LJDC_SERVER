@@ -14,6 +14,8 @@
           <element id="library" level="application" name="junit-4.10" />
           <element id="library" level="application" name="tomcat-api" />
           <element id="library" level="application" name="gson-2.6.2" />
+          <element id="library" level="project" name="gson-2.6.2" />
+          <element id="file-copy" path="D:/libs/struts2-convention-plugin-2.1.8.jar" />
         </element>
       </element>
     </root>

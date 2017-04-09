@@ -26,9 +26,12 @@ public class Libs {
     private int status;//同步状态
     private Date anchor;//同步锚点
 
+//    @Id
+//    @GeneratedValue(generator = "ASSIGN")
+//    @GenericGenerator(name = "ASSIGN", strategy = "assigned")
+
     @Id
-    @GeneratedValue(generator = "ASSIGN")
-    @GenericGenerator(name = "ASSIGN", strategy = "assigned")
+    @GeneratedValue(strategy = GenerationType.IDENTITY)
     @Column(name = "libsId", nullable = false)
     public int getLibsId() {
         return libsId;

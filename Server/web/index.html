@@ -1,0 +1,121 @@
+<!DOCTYPE html>
+<html>
+<head>
+    <meta charset="UTF-8">
+    <title>乐记单词-后台管理中心</title>
+    <link rel="stylesheet" href="./layui/css/layui.css">
+    <link rel="stylesheet" href="./css/global.css">
+    <script type="text/javascript" src="./layui/layui.js"></script>
+</head>
+<body>
+<div class="layui-layout layui-layout-admin">
+    <div class="layui-header header">
+        <div class="layui-main">
+            <a class="logo" href="">
+                <img src="./images/logo-top.png" alt="LJDC_CMS">
+            </a>
+            <ul class="layui-nav top-nav-container">
+                <li class="layui-nav-item layui-this">
+                    <a href="javascript:void(0)">词库</a>
+                </li>
+
+            </ul>
+            <div class="top_admin_user">
+                <a class="logout_btn" href="javascript:void(0)">退出</a>
+            </div>
+        </div>
+    </div>
+    <div class="layui-side layui-bg-black">
+        <div class="layui-side-scroll">
+            <ul class="layui-nav layui-nav-tree left_menu_ul">
+                <li class="layui-nav-item layui-nav-title">
+                    <a href="/web/libs" target="main">词库发布管理</a>
+                </li>
+                <li class="layui-nav-item first-item layui-this">
+                    <a href="/web/libs" target="main">
+                        <i class="layui-icon">&#xe609;</i>
+                        <cite>词库管理</cite>
+                    </a>
+                </li>
+            </ul>
+
+            <div class="content_manage_container left_menu_ul hide">
+                <div class="content_manage_title">内容管理</div>
+                <div id="content_manage_tree"></div>
+            </div>
+        </div>
+
+
+    </div>
+
+    <div class="layui-body iframe-container">
+        <div class="iframe-mask" id="iframe-mask"></div>
+        <iframe class="admin-iframe" id="admin-iframe" name="main" src="/web/libs.action"></iframe>
+    </div>
+
+    <!--页面底部 footer-->
+    <div class="layui-footer footer">
+        <div class="layui-main">
+            <p>2017 © LJDC_CMS</p>
+        </div>
+    </div>
+</div>
+
+
+<script type="text/javascript">
+    layui.use(['layer', 'element', 'jquery', 'tree'], function () {
+        var layer = layui.layer
+                , element = layui.element() //导航的hover效果、二级菜单等功能，需要依赖element模块
+                , jq = layui.jquery
+
+        //头部菜单切换
+        jq('.top-nav-container .layui-nav-item').click(function () {
+            var menu_index = jq(this).index('.top-nav-container .layui-nav-item');
+            jq('.top-nav-container .layui-nav-item').removeClass('layui-this');
+            jq(this).addClass('layui-this');
+            jq('.left_menu_ul').addClass('hide');
+            jq('.left_menu_ul:eq(' + menu_index + ')').removeClass('hide');
+            jq('.left_menu_ul .layui-nav-item').removeClass('layui-this');
+            jq('.left_menu_ul:eq(' + menu_index + ')').find('.first-item').addClass('layui-this');
+            var url = jq('.left_menu_ul:eq(' + menu_index + ')').find('.first-item a').attr('href');
+            jq('.admin-iframe').attr('src', url);
+            //出现遮罩层
+            jq("#iframe-mask").show();
+            //遮罩层消失
+            jq("#admin-iframe").load(function () {
+                jq("#iframe-mask").fadeOut(100);
+            });
+        });
+        //左边菜单点击
+        jq('.left_menu_ul .layui-nav-item').click(function () {
+            jq('.left_menu_ul .layui-nav-item').removeClass('layui-this');
+            jq(this).addClass('layui-this');
+            //出现遮罩层
+            jq("#iframe-mask").show();
+            //遮罩层消失
+            jq("#admin-iframe").load(function () {
+                jq("#iframe-mask").fadeOut(100);
+            });
+        });
+
+        //点击回到内容页面
+        jq('.content_manage_title').click(function () {
+            jq('.left_menu_ul .layui-nav-item').removeClass('layui-this');
+            jq(this).parent().addClass('hide');
+            jq('.content_put_manage').find('.first-item').addClass('layui-this');
+            var url = jq('.content_put_manage').find('.first-item a').attr('href');
+            jq('.admin-iframe').attr('src', url);
+            jq('.content_put_manage').removeClass('hide');
+
+        });
+
+        //退出登陆
+        jq('.logout_btn').click(function () {
+            location.assign("./login.html");
+        });
+
+
+    });
+</script>
+</body>
+</html>

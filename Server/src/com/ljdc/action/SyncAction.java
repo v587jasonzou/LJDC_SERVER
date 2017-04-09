@@ -733,6 +733,99 @@ public class SyncAction extends ActionSupport implements ServletResponseAware, S
         return null;
     }
 
+    //词库 由libName字段来区分词库
+    public String syncLib() {
+        System.out.println("REQUEST URI: " + request.getRequestURI());
+        System.out.println("parm \"syncJsonData\" : " + syncJsonData);
+        System.out.println("parm \"maxAnchor\" : " + maxAnchor);
+        Session session = null;
+
+        //客户端传来的JSON数据应该为""
+        List<Lib> datas = null;
+        try {
+            session = SessionsUtil.newSession();
+            ts = session.beginTransaction();
+
+            //step1:客户端需要同步的服务器的最新数据
+            Date maxAnchorDate = Utils.getDateFormater().parse(maxAnchor);
+
+            long count = (long) session.createQuery("SELECT count (*) from Lib where modified > ?").setParameter(0, maxAnchorDate).uniqueResult();
+            datas = new ArrayList<>();
+            if (count != 0) {
+                List<Lib> serverData = session.createQuery("from Lib where modified>?").setParameter(0, maxAnchorDate).list();
+                //将只存在于服务器的数据添加到返回信息中
+                for (Lib data : serverData) {
+                    //ORM映射关系 对象->属性
+                    data.setWordId(data.getWordLib().getWordId());
+                    data.setAnchor(data.getModified());
+                    data.setStatus(9);
+
+                    data.setWordLib(null);//将关联对象置NULL
+                    datas.add(data);
+                }
+            }
+
+            message.setCode(208);//更新过程中遇到数据版本冲突，客户端数据需要强制更新
+            message.setMsg(gson.toJson(datas));
+            Utils.printToBrowser(response, message.toString());
+            System.out.println("message lib: " + message.getMsg());
+
+        } catch (HibernateException e) {
+            e.printStackTrace();
+            message.setCode(400);
+            message.setMsg("服务器貌似遇到一点点小麻烦，请稍后重试");
+            Utils.printToBrowser(response, message.toString());
+            System.out.println("message lib: " + message.getMsg());
+        } catch (ParseException e) {
+            e.printStackTrace();
+        } finally {
+            SessionsUtil.closeNewSession(session);
+        }
+
+        return null;
+    }
+
+    //被删除的词库 由libName字段来区分词库
+    public String syncRemoveLib() {
+//        System.out.println("REQUEST URI: " + request.getRequestURI());
+//        System.out.println("parm \"syncJsonData\" : " + syncJsonData);
+//        System.out.println("parm \"maxAnchor\" : " + maxAnchor);
+        Session session = null;
+
+        //客户端传来的JSON数据应该为""
+        List<RemovedLib> datas = null;
+        try {
+            session = SessionsUtil.newSession();
+            ts = session.beginTransaction();
+
+            long count = (long) session.createQuery("SELECT count (*) from RemovedLib ").uniqueResult();
+            datas = new ArrayList<>();
+            if (count != 0) {
+                List<RemovedLib> serverData = session.createQuery("from RemovedLib").list();
+                //将只存在于服务器的数据添加到返回信息中
+                for (RemovedLib data : serverData) {
+                    datas.add(data);
+                }
+            }
+            message.setCode(209);//更新过程中遇到数据版本冲突，客户端数据需要强制更新
+            message.setMsg(gson.toJson(datas));
+            Utils.printToBrowser(response, message.toString());
+            System.out.println("message lib: " + message.getMsg());
+
+        } catch (HibernateException e) {
+            e.printStackTrace();
+            message.setCode(400);
+            message.setMsg("服务器貌似遇到一点点小麻烦，请稍后重试");
+            Utils.printToBrowser(response, message.toString());
+            System.out.println("message lib: " + message.getMsg());
+        } finally {
+            SessionsUtil.closeNewSession(session);
+        }
+
+        return null;
+    }
+
+
     /**
      * Sets the HTTP response object in implementing classes.
      *

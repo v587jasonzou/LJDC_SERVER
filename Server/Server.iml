@@ -44,5 +44,25 @@
     <orderEntry type="library" name="tomcat-api" level="application" />
     <orderEntry type="library" name="gson-2.6.2" level="application" />
     <orderEntry type="library" name="gson-2.6.2" level="project" />
+    <orderEntry type="module-library">
+      <library>
+        <CLASSES>
+          <root url="jar://D:/libs/struts2-convention-plugin-2.1.8.jar!/" />
+        </CLASSES>
+        <JAVADOC />
+        <SOURCES />
+      </library>
+    </orderEntry>
+    <orderEntry type="module-library">
+      <library>
+        <CLASSES>
+          <root url="jar://$MODULE_DIR$/web/WEB-INF/libs/struts2-convention-plugin-2.1.8.jar!/" />
+        </CLASSES>
+        <JAVADOC />
+        <SOURCES />
+      </library>
+    </orderEntry>
+    <orderEntry type="library" name="struts2-convention-plugin-2.1.8" level="project" />
+    <orderEntry type="library" name="struts2-convention-plugin-2.5.5" level="project" />
   </component>
 </module>
