@@ -23,9 +23,6 @@
     </package>
 
     <package name="web" namespace="/web" extends="encodingInterceptor">
-        <action name="test" method="test" class="com.ljdc.action.Test">
-            <result name="success">/jsp/welcome.jsp</result>
-        </action>
         <action name="upload" class="com.ljdc.action.FileUploadAction"/>
         <action name="login" class="com.ljdc.action.AdminLoginAction">
             <result name="success" type="redirect">/index.html</result>
@@ -46,6 +43,11 @@
             <result name="success" type="redirect">
                 libs.action
             </result>
+        </action>
+    </package>
+    <package name="test" namespace="/test" extends="encodingInterceptor">
+        <action name="*" method="{1}" class="com.ljdc.action.Test">
+            <result name="success">/jsp/welcome.jsp</result>
         </action>
     </package>
 </struts>

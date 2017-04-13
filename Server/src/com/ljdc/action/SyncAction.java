@@ -825,6 +825,128 @@ public class SyncAction extends ActionSupport implements ServletResponseAware, S
         return null;
     }
 
+    /**
+     * 用于划分词库的表:词库表
+     *
+     * @return
+     */
+    public String syncLearnLib() {
+        //请求参数一览:
+        System.out.println("REQUEST URI: " + request.getRequestURI());
+        System.out.println("parm \"syncJsonData\" : " + syncJsonData);
+        System.out.println("parm \"maxAnchor\" : " + maxAnchor);
+        System.out.println("parm \"userId\" : " + userId);
+        Session session = null;
+
+
+        List<LearnLib> list;//保存服务器匹配结果
+        List<LearnLib> datas;//客户端上传的更新数据
+        LearnLib serverLearnLib = null;
+        datas = gson.fromJson(syncJsonData, new TypeToken<List<LearnLib>>() {
+        }.getType());
+
+        try {
+            session = SessionsUtil.newSession();
+            ts = session.beginTransaction();
+            query = session.createQuery("from LearnLib t where t.user.userId = ? and t.lib.libId = ? or t.learnLibId = ?");
+
+            //step1: 客户端需要同步的，该用户在ID服务器的最新数据
+            Date maxAnchorDate = Utils.getDateFormater().parse(maxAnchor);
+            List<LearnLib> learnLibServers_new = session.createQuery("from LearnLib where modified > ? and user.userId=?").setParameter(0, maxAnchorDate).setParameter(1, userId).list();
+            System.out.println("learnLib_new start : " + learnLibServers_new.size());
+
+            //step2:
+            if (datas.size() > 0) {
+                for (LearnLib data : datas) {
+                    query.setParameter(0, data.getUserId()).setParameter(1, data.getLibId()).setParameter(2, data.getLearnLibId());
+                    list = query.list();
+                    System.out.println("是否存在相同记录 :" + (list.size() == 0 ? "false" : "true"));
+                    if (list.size() == 0 && data.getAnchor().compareTo(new Date(0)) <= 0) {  //不是多客户端同时新增一个记录的情况：直接新增记录
+                        System.out.println("新增记录LearnLib2");
+                        //关系映射
+                        data.setUser((UserServer) session.load(UserServer.class, data.getUserId()));
+                        data.setLib((Lib) session.load(Lib.class, data.getLibId()));
+                        //同步管理，响应值
+                        Date date = new Date();
+                        data.setModified(date);
+                        data.setAnchor(date);
+                        data.setStatusModify(9);
+                        session.save(data);
+                    } else if (list.size() != 0 && data.getAnchor().compareTo(list.get(0).getModified()) == 0 && data.getStatusModify() == 1) { //修改记录 TODO 删除记录
+                        System.out.println("修改记录LearnLib2");
+                        //关系映射
+                        data.setUser((UserServer) session.load(UserServer.class, data.getUserId()));
+                        data.setLib((Lib) session.load(Lib.class, data.getLibId()));
+                        //同步管理，响应值
+                        Date date = new Date();
+                        data.setModified(date);
+                        data.setAnchor(date);
+                        data.setStatusModify(9);
+                        if (data.getLearnLibId().equals(list.get(0).getLearnLibId())) {
+
+                            session.evict(list.get(0));//更新操作，之前查找到一个相同ID的记录，必须取消与Session的关联，否则跑出异常
+                        }
+                        session.update(data);
+                    } else if (list.size() != 0 && data.getAnchor().compareTo(list.get(0).getModified()) < 0) {//客户端需要先进行同步（强行同步客户端）
+                        System.out.println("删除客户端记录LearnLib2");
+                        serverLearnLib = list.get(0);//服务器端记录
+                        //记录客户端需要删除的不同步记录
+                        if (!serverLearnLib.getLearnLibId().equals(data.getLearnLibId())) {
+                            serverLearnLib.setOldId(data.getLearnLibId());
+                        }
+                        //ORM映射关系 对象->属性
+                        serverLearnLib.setUserId(serverLearnLib.getUser().getUserId());
+                        serverLearnLib.setLibId(serverLearnLib.getLib().getLibId());
+                        //同步管理，响应值
+                        serverLearnLib.setAnchor(serverLearnLib.getModified());
+                        serverLearnLib.setStatusModify(9);
+                        datas.remove(data);//移除
+                        if (learnLibServers_new.contains(serverLearnLib)) {
+                            learnLibServers_new.remove(serverLearnLib);
+                        }
+                        datas.add(serverLearnLib);
+                    }
+                }
+                ts.commit();
+            }
+
+            //将"只存在"于服务器的数据添加到返回信息中
+            System.out.println("learnLib_new end : " + learnLibServers_new.size());
+            if (learnLibServers_new.size() != 0) {
+                for (LearnLib data : learnLibServers_new) {
+                    System.out.println("data.toString() :" + data.toString());
+                    data.setAnchor(data.getModified());
+                    data.setStatusModify(9);
+                    data.setUserId(data.getUser().getUserId());
+                    data.setLibId(data.getLib().getLibId());
+                    datas.add(data);
+                }
+            }
+            for (LearnLib data : datas) {//在使用GSON之前，去掉与关系属性的关系，设置为NULL
+                data.setUser(null);
+                data.setLib(null);
+            }
+
+            message.setCode(210);//更新过程中遇到数据版本冲突，客户端数据需要强制更新
+            message.setMsg(gson.toJson(datas));
+            Utils.printToBrowser(response, message.toString());
+            System.out.println("message learnLib : " + message.getMsg());
+
+        } catch (HibernateException e) {
+            e.printStackTrace();
+            message.setCode(400);
+            message.setMsg("服务器貌似遇到一点点小麻烦，请稍后重试");
+            Utils.printToBrowser(response, message.toString());
+            System.out.println("message learnLib : " + message.getMsg());
+        } catch (ParseException e) {
+            e.printStackTrace();
+        } finally {
+            SessionsUtil.closeNewSession(session);
+        }
+
+        return null;
+    }
+
 
     /**
      * Sets the HTTP response object in implementing classes.
