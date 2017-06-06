@@ -23,7 +23,7 @@ import java.util.List;
  * User:邹旭
  * Date:2017/4/7
  * Time:23:46
- * Desc:略
+ * Desc:词库列表相关请求
  */
 public class LibListAction extends ActionSupport {
 

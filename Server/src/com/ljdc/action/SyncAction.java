@@ -29,7 +29,7 @@ import java.util.List;
  * User:邹旭
  * Date:2016/11/9 0009
  * Time:下午 6:04
- * Desc:处理登录与注册请求（Client）
+ * Desc:数据同步业务
  */
 @SuppressWarnings("ALL")
 public class SyncAction extends ActionSupport implements ServletResponseAware, ServletRequestAware {
@@ -91,7 +91,7 @@ public class SyncAction extends ActionSupport implements ServletResponseAware, S
     }
 
     /**
-     * 新增一个单词 -> 单词库
+     * 新增一个单词 -> 单词库 :Client查询单词并导入词库Lib
      *
      * @param syncJsonData //请求参数
      * @return
@@ -850,7 +850,7 @@ public class SyncAction extends ActionSupport implements ServletResponseAware, S
             ts = session.beginTransaction();
             query = session.createQuery("from LearnLib t where t.user.userId = ? and t.lib.libId = ? or t.learnLibId = ?");
 
-            //step1: 客户端需要同步的，该用户在ID服务器的最新数据
+            //step1: 客户端需要同步的，该用户的ID在服务器的最新数据
             Date maxAnchorDate = Utils.getDateFormater().parse(maxAnchor);
             List<LearnLib> learnLibServers_new = session.createQuery("from LearnLib where modified > ? and user.userId=?").setParameter(0, maxAnchorDate).setParameter(1, userId).list();
             System.out.println("learnLib_new start : " + learnLibServers_new.size());
@@ -861,7 +861,8 @@ public class SyncAction extends ActionSupport implements ServletResponseAware, S
                     query.setParameter(0, data.getUserId()).setParameter(1, data.getLibId()).setParameter(2, data.getLearnLibId());
                     list = query.list();
                     System.out.println("是否存在相同记录 :" + (list.size() == 0 ? "false" : "true"));
-                    if (list.size() == 0 && data.getAnchor().compareTo(new Date(0)) <= 0) {  //不是多客户端同时新增一个记录的情况：直接新增记录
+                    //CASE1:不是多客户端同时新增一个记录的情况：直接新增记录
+                    if (list.size() == 0 && data.getAnchor().compareTo(new Date(0)) <= 0) {
                         System.out.println("新增记录LearnLib2");
                         //关系映射
                         data.setUser((UserServer) session.load(UserServer.class, data.getUserId()));
@@ -872,7 +873,9 @@ public class SyncAction extends ActionSupport implements ServletResponseAware, S
                         data.setAnchor(date);
                         data.setStatusModify(9);
                         session.save(data);
-                    } else if (list.size() != 0 && data.getAnchor().compareTo(list.get(0).getModified()) == 0 && data.getStatusModify() == 1) { //修改记录 TODO 删除记录
+
+                        //CASE2:修改记录
+                    } else if (list.size() != 0 && data.getAnchor().compareTo(list.get(0).getModified()) == 0 && data.getStatusModify() == 1) {
                         System.out.println("修改记录LearnLib2");
                         //关系映射
                         data.setUser((UserServer) session.load(UserServer.class, data.getUserId()));
@@ -887,7 +890,9 @@ public class SyncAction extends ActionSupport implements ServletResponseAware, S
                             session.evict(list.get(0));//更新操作，之前查找到一个相同ID的记录，必须取消与Session的关联，否则跑出异常
                         }
                         session.update(data);
-                    } else if (list.size() != 0 && data.getAnchor().compareTo(list.get(0).getModified()) < 0) {//客户端需要先进行同步（强行同步客户端）
+
+                        //CASE3:客户端需要先进行同步，（相同ID多端同步，数据冲突）
+                    } else if (list.size() != 0 && data.getAnchor().compareTo(list.get(0).getModified()) < 0) {
                         System.out.println("删除客户端记录LearnLib2");
                         serverLearnLib = list.get(0);//服务器端记录
                         //记录客户端需要删除的不同步记录
